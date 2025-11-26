@@ -1,0 +1,11 @@
+.fallback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.fallback__text {
+  font-size: 1rem;
+  color: var(--text-primary, #333);
+}

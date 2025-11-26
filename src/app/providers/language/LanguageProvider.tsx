@@ -4,6 +4,7 @@ import {
   setLanguage as setI18nLanguage,
   type Language,
 } from "../../../shared/lib/i18n";
+import { storage } from "../../../shared/lib/storage/localStorage";
 
 interface LanguageContextType {
   language: Language;
@@ -19,16 +20,15 @@ const STORAGE_KEY = "portfolio_language";
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "ru" || stored === "en") {
-      return stored;
-    }
-    return "ru";
+    const validator = (value: unknown): value is Language => {
+      return value === "ru" || value === "en";
+    };
+    return storage.get<Language>(STORAGE_KEY, "ru", validator);
   });
 
   useEffect(() => {
     setI18nLanguage(language);
-    localStorage.setItem(STORAGE_KEY, language);
+    storage.set(STORAGE_KEY, language);
   }, [language]);
 
   const setLanguage = (lang: Language) => {

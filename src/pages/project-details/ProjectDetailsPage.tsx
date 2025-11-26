@@ -8,11 +8,13 @@ import { useLanguage } from "../../app/providers/language/useLanguage";
 import { useToast } from "../../app/providers/toast/ToastProvider";
 import type { Project } from "../../shared/api/mockData";
 import { getPageUrl } from "../../shared/lib/constants";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const ProjectDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const { setTitle, setDescription, setOpenGraph } = useHead();
   const { showToast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
@@ -52,8 +54,8 @@ const ProjectDetailsPage = () => {
         url: url,
       });
     } else if (!isLoading) {
-      setTitle("Project Not Found | Portfolio");
-      setDescription("The project you're looking for doesn't exist.");
+      setTitle(t("meta.projectNotFound.title"));
+      setDescription(t("meta.projectNotFound.description"));
     }
   }, [
     project,
@@ -62,13 +64,14 @@ const ProjectDetailsPage = () => {
     setDescription,
     setOpenGraph,
     location.pathname,
+    language,
   ]);
 
   if (isLoading) {
     return (
       <div className={styles.projectDetailsPage}>
         <div className={styles.projectDetailsPage__container}>
-          <p>Loading...</p>
+          <p>{t("common.loading")}</p>
         </div>
       </div>
     );
@@ -80,10 +83,10 @@ const ProjectDetailsPage = () => {
         <div className={styles.projectDetailsPage__container}>
           <div className={styles.projectDetailsPage__notFound}>
             <h1 className={styles.projectDetailsPage__notFoundTitle}>
-              Project Not Found
+              {t("error.projectNotFound")}
             </h1>
             <p className={styles.projectDetailsPage__notFoundText}>
-              The project you're looking for doesn't exist.
+              {t("error.projectNotFoundDescription")}
             </p>
           </div>
         </div>
@@ -101,12 +104,12 @@ const ProjectDetailsPage = () => {
             </h1>
             <div className={styles.projectDetailsPage__image}>
               <div className={styles.projectDetailsPage__placeholder}>
-                Project Image
+                {t("project.image")}
               </div>
             </div>
             <div className={styles.projectDetailsPage__description}>
               <h2 className={styles.projectDetailsPage__sectionTitle}>
-                Description
+                {t("project.description")}
               </h2>
               <p className={styles.projectDetailsPage__text}>
                 {project.description}
@@ -114,7 +117,7 @@ const ProjectDetailsPage = () => {
             </div>
             <div className={styles.projectDetailsPage__techStack}>
               <h2 className={styles.projectDetailsPage__sectionTitle}>
-                Tech Stack
+                {t("project.techStack")}
               </h2>
               <div className={styles.projectDetailsPage__techList}>
                 {project.techStack.map((tech, index) => (
@@ -129,7 +132,7 @@ const ProjectDetailsPage = () => {
             <div className={styles.projectDetailsPage__info}>
               <div className={styles.projectDetailsPage__infoItem}>
                 <span className={styles.projectDetailsPage__infoLabel}>
-                  Year
+                  {t("project.year")}
                 </span>
                 <span className={styles.projectDetailsPage__infoValue}>
                   {project.year}
@@ -137,7 +140,7 @@ const ProjectDetailsPage = () => {
               </div>
               <div className={styles.projectDetailsPage__infoItem}>
                 <span className={styles.projectDetailsPage__infoLabel}>
-                  Status
+                  {t("project.status")}
                 </span>
                 <span className={styles.projectDetailsPage__infoValue}>
                   {project.status}

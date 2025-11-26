@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import SuspenseFallbackUi from "../../shared/ui/suspense-fallback/SuspenseFallbackUi";
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import("../../pages/home/HomePage"));
@@ -33,20 +34,7 @@ const AdminStatusPage = lazy(
 
 const AppRoutes = () => {
   return (
-    <Suspense
-      fallback={
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "100vh",
-          }}
-        >
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={<SuspenseFallbackUi />}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />

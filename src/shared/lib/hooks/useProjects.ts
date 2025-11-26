@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { mockProjects } from "../../api/mocks/mockProjects";
 import { normalizeProject } from "../api/normalize";
 import type { Project } from "../../api/mockData";
@@ -37,9 +37,12 @@ export const useProjects = (options: UseProjectsOptions = {}) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [language, showToast]);
+  }, [language, showToast, limit, featured]);
 
-  const featuredProjects = featured ? projects.slice(0, limit || 3) : projects;
+  const featuredProjects = useMemo(() => {
+    if (!featured) return projects;
+    return projects.slice(0, limit || 3);
+  }, [projects, featured, limit]);
 
   return {
     projects: featuredProjects,

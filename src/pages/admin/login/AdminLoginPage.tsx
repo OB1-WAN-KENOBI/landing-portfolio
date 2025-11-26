@@ -9,8 +9,10 @@ import TextUi from "../../../shared/ui/text/TextUi";
 import { useAuth } from "../../../app/providers/auth/AuthProvider";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import { validateEmail } from "../../../shared/lib/validation/email";
+import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
 
 const AdminLoginPage = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{
@@ -25,13 +27,13 @@ const AdminLoginPage = () => {
     const newErrors: { email?: string; password?: string } = {};
 
     if (!email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("validation.email.required");
     } else if (!validateEmail(email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = t("validation.email.invalid");
     }
 
     if (password.length < 4) {
-      newErrors.password = "Password must be at least 4 characters";
+      newErrors.password = t("validation.password.minLength");
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -43,10 +45,10 @@ const AdminLoginPage = () => {
 
     try {
       await login(email, password);
-      showToast("success", "Login successful");
+      showToast("success", t("toast.login.success"));
       navigate("/admin/dashboard");
     } catch (err) {
-      showToast("error", authError || "Login failed");
+      showToast("error", authError || t("toast.login.failed"));
     }
   };
 
@@ -54,7 +56,7 @@ const AdminLoginPage = () => {
     <div className={styles.adminLoginPage}>
       <SectionUi>
         <div className={styles.adminLoginPage__container}>
-          <TitleUi variant="h1">Admin Login</TitleUi>
+          <TitleUi variant="h1">{t("admin.login.title")}</TitleUi>
           <form
             className={styles.adminLoginPage__form}
             onSubmit={(e) => {
@@ -70,25 +72,25 @@ const AdminLoginPage = () => {
               </div>
             )}
             <InputUi
-              label="Email"
+              label={t("form.email")}
               type="email"
-              placeholder="admin@example.com"
+              placeholder={t("admin.login.placeholder.email")}
               value={email}
               error={errors.email}
               onChange={setEmail}
               disabled={loading}
             />
             <InputUi
-              label="Password"
+              label={t("form.password")}
               type="password"
-              placeholder="Enter password"
+              placeholder={t("admin.login.placeholder.password")}
               value={password}
               error={errors.password}
               onChange={setPassword}
               disabled={loading}
             />
             <ButtonUi type="submit" disabled={loading}>
-              {loading ? "Logging in..." : "Login"}
+              {loading ? t("form.loggingIn") : t("form.login")}
             </ButtonUi>
           </form>
         </div>

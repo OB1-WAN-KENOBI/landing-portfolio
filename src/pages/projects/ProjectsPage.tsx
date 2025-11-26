@@ -10,10 +10,12 @@ import { useProjects } from "../../shared/lib/hooks/useProjects";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import type { Project } from "../../shared/api/mockData";
 import { getPageUrl } from "../../shared/lib/constants";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const ProjectsPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const location = useLocation();
   const { projects, isLoading } = useProjects({ language });
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
@@ -30,21 +32,21 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     const url = getPageUrl(location.pathname);
-    setTitle("Projects | Portfolio");
-    setDescription("Browse through my portfolio of web development projects");
+    setTitle(t("meta.projects.title"));
+    setDescription(t("meta.projects.description"));
     setOpenGraph({
-      title: "Projects | Portfolio",
-      description: "Browse through my portfolio of web development projects",
+      title: t("meta.projects.title"),
+      description: t("meta.projects.description"),
       url: url,
     });
-  }, [location.pathname, setTitle, setDescription, setOpenGraph]);
+  }, [location.pathname, setTitle, setDescription, setOpenGraph, language]);
 
   if (isLoading) {
     return (
       <div className={styles.projectsPage}>
         <SectionUi>
-          <TitleUi variant="h1">Projects</TitleUi>
-          <p>Loading...</p>
+          <TitleUi variant="h1">{t("page.projects")}</TitleUi>
+          <p>{t("common.loading")}</p>
         </SectionUi>
       </div>
     );
@@ -53,7 +55,7 @@ const ProjectsPage = () => {
   return (
     <div className={styles.projectsPage}>
       <SectionUi>
-        <TitleUi variant="h1">Projects</TitleUi>
+        <TitleUi variant="h1">{t("page.projects")}</TitleUi>
         <ProjectsFiltersWidget
           projects={projects}
           onFilteredProjectsChange={handleFilteredProjectsChange}

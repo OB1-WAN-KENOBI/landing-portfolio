@@ -1,3 +1,5 @@
+import { logger } from "../logger";
+
 /**
  * Утилита для работы с localStorage
  */
@@ -16,11 +18,20 @@ export const storage = {
       if (item === null) {
         return defaultValue;
       }
-      const parsed = JSON.parse(item);
+
+      let parsed: unknown;
+      try {
+        // Пытаемся распарсить как JSON
+        parsed = JSON.parse(item);
+      } catch {
+        // Если не JSON, возможно это старая строка, сохраненная напрямую
+        // Пробуем использовать значение как есть
+        parsed = item;
+      }
 
       // Если есть валидатор, проверяем данные
       if (validator && !validator(parsed)) {
-        console.warn(
+        logger.warn(
           `Invalid data in localStorage "${key}", using default value`
         );
         localStorage.removeItem(key);
@@ -29,7 +40,7 @@ export const storage = {
 
       return parsed as T;
     } catch (e) {
-      console.error(`Failed to parse localStorage item "${key}":`, e);
+      logger.error(`Failed to parse localStorage item "${key}":`, e);
       localStorage.removeItem(key);
       return defaultValue;
     }
@@ -43,10 +54,10 @@ export const storage = {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
       if (e instanceof DOMException && e.name === "QuotaExceededError") {
-        console.error("LocalStorage quota exceeded");
+        logger.error("LocalStorage quota exceeded");
         // Можно показать toast пользователю
       } else {
-        console.error(`Failed to save to localStorage "${key}":`, e);
+        logger.error(`Failed to save to localStorage "${key}":`, e);
       }
     }
   },
@@ -58,7 +69,7 @@ export const storage = {
     try {
       localStorage.removeItem(key);
     } catch (e) {
-      console.error(`Failed to remove localStorage item "${key}":`, e);
+      logger.error(`Failed to remove localStorage item "${key}":`, e);
     }
   },
 };

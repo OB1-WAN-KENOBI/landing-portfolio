@@ -7,6 +7,7 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 import type { Theme } from "./types";
+import { storage } from "../../../shared/lib/storage/localStorage";
 
 interface ThemeContextType {
   currentTheme: Theme;
@@ -32,13 +33,16 @@ const STORAGE_KEY = "portfolio_theme";
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
-    // Восстанавливаем тему из localStorage при инициализации
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "dark" || stored === "light") {
-      return stored;
+    try {
+      // Восстанавливаем тему из localStorage при инициализации
+      const validator = (value: unknown): value is Theme => {
+        return value === "dark" || value === "light";
+      };
+      return storage.get<Theme>(STORAGE_KEY, "dark", validator);
+    } catch (error) {
+      // В случае любой ошибки используем значение по умолчанию
+      return "dark";
     }
-    // По умолчанию dark
-    return "dark";
   });
 
   // Устанавливаем класс на <html> при изменении темы и при монтировании
@@ -51,14 +55,14 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const toggleTheme = useCallback(() => {
     setCurrentTheme((prev) => {
       const newTheme = prev === "dark" ? "light" : "dark";
-      localStorage.setItem(STORAGE_KEY, newTheme);
+      storage.set(STORAGE_KEY, newTheme);
       return newTheme;
     });
   }, []);
 
   const setTheme = useCallback((theme: Theme) => {
     setCurrentTheme(theme);
-    localStorage.setItem(STORAGE_KEY, theme);
+    storage.set(STORAGE_KEY, theme);
   }, []);
 
   return (

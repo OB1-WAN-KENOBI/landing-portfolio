@@ -16,10 +16,12 @@ import {
   CORE_SKILLS_COUNT,
   getPageUrl,
 } from "../../shared/lib/constants";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const HomePage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const location = useLocation();
 
   const { projects: featuredProjects, isLoading: isLoadingProjects } =
@@ -58,7 +60,7 @@ const HomePage = () => {
   if (isLoading) {
     return (
       <SectionUi>
-        <p>Loading...</p>
+        <p>{t("common.loading")}</p>
       </SectionUi>
     );
   }

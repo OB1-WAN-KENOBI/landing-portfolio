@@ -7,9 +7,11 @@ import ButtonUi from "../../../shared/ui/form/ButtonUi";
 import { mockStatus } from "../../../shared/api/mocks/mockStatus";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import type { ApiStatus } from "../../../shared/api/http/types";
+import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
 
 const AdminStatusPage = () => {
   const { showToast } = useToast();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<ApiStatus["status"]>("Available");
@@ -55,11 +57,11 @@ const AdminStatusPage = () => {
             }
           : undefined,
       });
-      showToast("success", "Status updated successfully");
+      showToast("success", t("toast.status.updated"));
     } catch (error) {
       showToast(
         "error",
-        error instanceof Error ? error.message : "Failed to update status"
+        error instanceof Error ? error.message : t("error.failedToUpdate")
       );
     } finally {
       setIsSaving(false);
@@ -69,8 +71,8 @@ const AdminStatusPage = () => {
   if (isLoading) {
     return (
       <div className={styles.adminStatusPage}>
-        <TitleUi variant="h1">Status</TitleUi>
-        <p>Loading...</p>
+        <TitleUi variant="h1">{t("project.status")}</TitleUi>
+        <p>{t("common.loading")}</p>
       </div>
     );
   }
@@ -78,9 +80,9 @@ const AdminStatusPage = () => {
   return (
     <div className={styles.adminStatusPage}>
       <div className={styles.adminStatusPage__header}>
-        <TitleUi variant="h1">Status</TitleUi>
+        <TitleUi variant="h1">{t("project.status")}</TitleUi>
         <ButtonUi onClick={handleSave} disabled={isSaving}>
-          {isSaving ? "Saving..." : "Save"}
+          {isSaving ? t("form.saving") : t("form.save")}
         </ButtonUi>
       </div>
       <div className={styles.adminStatusPage__content}>

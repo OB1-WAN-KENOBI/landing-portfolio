@@ -8,6 +8,7 @@ import {
 import type { ReactNode } from "react";
 import type { ApiUser } from "../../../shared/api/http/types";
 import { mockAuth } from "../../../shared/api/mocks/mockAuth";
+import { storage } from "../../../shared/lib/storage/localStorage";
 
 interface AuthContextType {
   user: ApiUser | null;
@@ -42,14 +43,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // Восстанавливаем user из localStorage при инициализации
   useEffect(() => {
-    const storedUser = localStorage.getItem(STORAGE_KEY);
+    const validator = (value: unknown): value is ApiUser => {
+      return (
+        typeof value === "object" &&
+        value !== null &&
+        "id" in value &&
+        "name" in value &&
+        "email" in value &&
+        "role" in value &&
+        typeof (value as ApiUser).id === "string" &&
+        typeof (value as ApiUser).name === "string" &&
+        typeof (value as ApiUser).email === "string" &&
+        ((value as ApiUser).role === "admin" ||
+          (value as ApiUser).role === "user")
+      );
+    };
+
+    const storedUser = storage.get<ApiUser | null>(
+      STORAGE_KEY,
+      null,
+      validator
+    );
     if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser) as ApiUser;
-        setUser(parsedUser);
-      } catch (e) {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+      setUser(storedUser);
     }
     setLoading(false);
   }, []);
@@ -61,7 +77,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const userData = await mockAuth.login(email, password);
       setUser(userData);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+      storage.set(STORAGE_KEY, userData);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);
@@ -78,7 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       await mockAuth.logout();
       setUser(null);
-      localStorage.removeItem(STORAGE_KEY);
+      storage.remove(STORAGE_KEY);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Logout failed";
       setError(errorMessage);

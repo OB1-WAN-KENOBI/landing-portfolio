@@ -8,10 +8,12 @@ import { useProfile } from "../../shared/lib/hooks/useProfile";
 import { useSkills } from "../../shared/lib/hooks/useSkills";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import { getPageUrl } from "../../shared/lib/constants";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const AboutPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const location = useLocation();
   const {
     profile,
@@ -33,12 +35,12 @@ const AboutPage = () => {
   useEffect(() => {
     if (profile && aboutTexts.length > 0) {
       const url = getPageUrl(location.pathname);
-      setTitle(`About ${profile.name} | Portfolio`);
+      setTitle(`${t("page.about")} ${profile.name} | Portfolio`);
       setDescription(
         `${profile.name} - ${profile.role}. ${aboutTexts[0] || ""}`
       );
       setOpenGraph({
-        title: `About ${profile.name}`,
+        title: `${t("page.about")} ${profile.name}`,
         description: `${profile.name} - ${profile.role}`,
         url: url,
       });
@@ -50,14 +52,15 @@ const AboutPage = () => {
     setTitle,
     setDescription,
     setOpenGraph,
+    language,
   ]);
 
   if (isLoading || !profile) {
     return (
       <div className={styles.aboutPage}>
         <div className={styles.aboutPage__container}>
-          <TitleUi variant="h1">About</TitleUi>
-          <p>Loading...</p>
+          <TitleUi variant="h1">{t("page.about")}</TitleUi>
+          <p>{t("common.loading")}</p>
         </div>
       </div>
     );
@@ -66,25 +69,29 @@ const AboutPage = () => {
   return (
     <div className={styles.aboutPage}>
       <div className={styles.aboutPage__container}>
-        <TitleUi variant="h1">About</TitleUi>
+        <TitleUi variant="h1">{t("page.about")}</TitleUi>
 
         <div className={styles.aboutPage__content}>
           <div className={styles.aboutPage__photo}>
             <div className={styles.aboutPage__photoPlaceholder}>
-              Profile Photo
+              {t("about.profilePhoto")}
             </div>
           </div>
 
           <div className={styles.aboutPage__info}>
             <div className={styles.aboutPage__resume}>
               <div className={styles.aboutPage__resumeItem}>
-                <span className={styles.aboutPage__resumeLabel}>Name</span>
+                <span className={styles.aboutPage__resumeLabel}>
+                  {t("about.name")}
+                </span>
                 <span className={styles.aboutPage__resumeValue}>
                   {profile.name}
                 </span>
               </div>
               <div className={styles.aboutPage__resumeItem}>
-                <span className={styles.aboutPage__resumeLabel}>Role</span>
+                <span className={styles.aboutPage__resumeLabel}>
+                  {t("about.role")}
+                </span>
                 <span className={styles.aboutPage__resumeValue}>
                   {profile.role}
                 </span>
@@ -92,7 +99,7 @@ const AboutPage = () => {
               {frontendSkills.length > 0 && (
                 <div className={styles.aboutPage__resumeItem}>
                   <span className={styles.aboutPage__resumeLabel}>
-                    Tech Stack
+                    {t("about.techStack")}
                   </span>
                   <span className={styles.aboutPage__resumeValue}>
                     {frontendSkills.join(", ")}

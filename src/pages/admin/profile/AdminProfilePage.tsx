@@ -6,10 +6,12 @@ import AdminProfileFormUi from "../../../shared/ui/admin-profile-form/AdminProfi
 import { mockProfile } from "../../../shared/api/mocks/mockProfile";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import { useLanguage } from "../../../app/providers/language/useLanguage";
+import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
 
 const AdminProfilePage = () => {
   const { showToast } = useToast();
   const { language } = useLanguage();
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [name, setName] = useState("");
@@ -88,11 +90,11 @@ const AdminProfilePage = () => {
           telegram: telegram.trim() || undefined,
         },
       });
-      showToast("success", "Profile updated successfully");
+      showToast("success", t("toast.profile.updated"));
     } catch (error) {
       showToast(
         "error",
-        error instanceof Error ? error.message : "Failed to update profile"
+        error instanceof Error ? error.message : t("error.failedToUpdate")
       );
     } finally {
       setIsSaving(false);
@@ -102,8 +104,8 @@ const AdminProfilePage = () => {
   if (isLoading) {
     return (
       <div className={styles.adminProfilePage}>
-        <TitleUi variant="h1">Profile</TitleUi>
-        <p>Loading...</p>
+        <TitleUi variant="h1">{t("page.about")}</TitleUi>
+        <p>{t("common.loading")}</p>
       </div>
     );
   }
@@ -111,9 +113,9 @@ const AdminProfilePage = () => {
   return (
     <div className={styles.adminProfilePage}>
       <div className={styles.adminProfilePage__header}>
-        <TitleUi variant="h1">Profile</TitleUi>
+        <TitleUi variant="h1">{t("page.about")}</TitleUi>
         <ButtonUi onClick={handleSave} disabled={isSaving}>
-          {isSaving ? "Saving..." : "Save"}
+          {isSaving ? t("form.saving") : t("form.save")}
         </ButtonUi>
       </div>
       <AdminProfileFormUi

@@ -6,26 +6,28 @@ import TitleUi from "../../shared/ui/title/TitleUi";
 import ContactFormWidget from "../../widgets/contact-form/ContactFormWidget";
 import { useHead } from "../../app/providers/head/HeadManager";
 import { getPageUrl } from "../../shared/lib/constants";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const ContactPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
+  const { t, language } = useTranslation();
   const location = useLocation();
 
   useEffect(() => {
     const url = getPageUrl(location.pathname);
-    setTitle("Contact | Portfolio");
-    setDescription("Get in touch with me for collaboration or inquiries");
+    setTitle(t("meta.contact.title"));
+    setDescription(t("meta.contact.description"));
     setOpenGraph({
-      title: "Contact | Portfolio",
-      description: "Get in touch with me for collaboration or inquiries",
+      title: t("meta.contact.title"),
+      description: t("meta.contact.description"),
       url: url,
     });
-  }, [location.pathname, setTitle, setDescription, setOpenGraph]);
+  }, [location.pathname, setTitle, setDescription, setOpenGraph, language]);
 
   return (
     <div className={styles.contactPage}>
       <SectionUi>
-        <TitleUi variant="h1">Contact</TitleUi>
+        <TitleUi variant="h1">{t("page.contact")}</TitleUi>
         <ContactFormWidget />
       </SectionUi>
     </div>

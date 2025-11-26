@@ -2,8 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import ContactFormUi from "../../shared/ui/contact-form/ContactFormUi";
 import { validateEmail } from "../../shared/lib/validation/email";
 import { sanitizeInput } from "../../shared/lib/validation/sanitize";
+import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 
 const ContactFormWidget = () => {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -23,19 +25,19 @@ const ContactFormWidget = () => {
     } = {};
 
     if (!name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = t("validation.name.required");
     }
 
     if (!email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("validation.email.required");
     } else if (!validateEmail(email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = t("validation.email.invalid");
     }
 
     if (!message.trim()) {
-      newErrors.message = "Message is required";
+      newErrors.message = t("validation.message.required");
     } else if (message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
+      newErrors.message = t("validation.message.minLength");
     }
 
     setErrors(newErrors);
@@ -63,15 +65,15 @@ const ContactFormWidget = () => {
 
     setIsSubmitting(true);
 
-    // Санитизация данных перед отправкой
-    sanitizeInput(name);
-    sanitizeInput(email);
-    sanitizeInput(message);
+    // Применяем санитизацию и сохраняем результат
+    const sanitizedName = sanitizeInput(name);
+    const sanitizedEmail = sanitizeInput(email);
+    const sanitizedMessage = sanitizeInput(message);
 
-    // Имитация отправки (без API)
+    // Используем санитизированные значения
     timeoutRef.current = setTimeout(() => {
       setIsSubmitting(false);
-      setSuccessMessage("Message sent!");
+      setSuccessMessage(t("contact.form.messageSent"));
       setName("");
       setEmail("");
       setMessage("");
@@ -96,6 +98,7 @@ const ContactFormWidget = () => {
       onSubmit={handleSubmit}
       isSubmitting={isSubmitting}
       successMessage={successMessage}
+      t={t}
     />
   );
 };

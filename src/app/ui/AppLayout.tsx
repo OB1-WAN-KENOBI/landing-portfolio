@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { useMemo } from "react";
 import Header from "../../widgets/header/Header";
 import Footer from "../../widgets/footer/Footer";
 
@@ -9,10 +8,7 @@ interface AppLayoutProps {
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const location = useLocation();
-  const isAdminPage = useMemo(
-    () => location.pathname.startsWith("/admin"),
-    [location.pathname]
-  );
+  const isAdminPage = location.pathname.startsWith("/admin");
 
   return (
     <>

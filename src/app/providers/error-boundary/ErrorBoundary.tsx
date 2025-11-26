@@ -1,5 +1,6 @@
 import { Component } from "react";
 import type { ReactNode, ErrorInfo } from "react";
+import { logger } from "@/shared/lib/logger";
 import styles from "./ErrorBoundary.module.scss";
 
 interface ErrorBoundaryProps {
@@ -29,9 +30,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
-    console.error("Error stack:", error.stack);
-    console.error("Component stack:", errorInfo.componentStack);
+    logger.error("ErrorBoundary caught an error:", error, errorInfo);
+    logger.error("Error stack:", error.stack);
+    logger.error("Component stack:", errorInfo.componentStack);
   }
 
   render() {

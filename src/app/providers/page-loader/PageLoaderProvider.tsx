@@ -86,7 +86,7 @@ export const PageLoaderProvider = ({ children }: PageLoaderProviderProps) => {
 
       return () => clearTimeout(timer);
     }
-  }, [isLoading, location.pathname, stopLoading]);
+  }, [isLoading, stopLoading]);
 
   return (
     <PageLoaderContext.Provider

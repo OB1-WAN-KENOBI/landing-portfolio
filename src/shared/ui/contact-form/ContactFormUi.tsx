@@ -18,6 +18,7 @@ interface ContactFormUiProps {
   onSubmit: () => void;
   isSubmitting?: boolean;
   successMessage?: string;
+  t: (key: string) => string;
 }
 
 const ContactFormUi = ({
@@ -31,6 +32,7 @@ const ContactFormUi = ({
   onSubmit,
   isSubmitting = false,
   successMessage,
+  t,
 }: ContactFormUiProps) => {
   return (
     <form
@@ -42,24 +44,24 @@ const ContactFormUi = ({
     >
       <div className={styles.contactForm__fields}>
         <InputUi
-          label="Name"
+          label={t("contact.form.name")}
           type="text"
-          placeholder="Your name"
+          placeholder={t("contact.form.placeholder.name")}
           value={name}
           error={errors.name}
           onChange={onNameChange}
         />
         <InputUi
-          label="Email"
+          label={t("contact.form.email")}
           type="email"
-          placeholder="your.email@example.com"
+          placeholder={t("contact.form.placeholder.email")}
           value={email}
           error={errors.email}
           onChange={onEmailChange}
         />
         <TextareaUi
-          label="Message"
-          placeholder="Your message..."
+          label={t("contact.form.message")}
+          placeholder={t("contact.form.placeholder.message")}
           value={message}
           error={errors.message}
           onChange={onMessageChange}
@@ -70,7 +72,7 @@ const ContactFormUi = ({
         <div className={styles.contactForm__success}>{successMessage}</div>
       )}
       <ButtonUi type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Sending..." : "Send"}
+        {isSubmitting ? t("contact.form.sending") : t("contact.form.send")}
       </ButtonUi>
     </form>
   );
