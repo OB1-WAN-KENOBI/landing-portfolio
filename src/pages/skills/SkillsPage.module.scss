@@ -1,0 +1,22 @@
+@use "../../shared/styles" as *;
+
+.skillsPage {
+  width: 100%;
+  min-height: 100%;
+  padding: 48px 0;
+  background: var(--color-bg);
+}
+
+.skillsPage__container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: 0 auto;
+}
+
+.skillsPage__title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 32px;
+}

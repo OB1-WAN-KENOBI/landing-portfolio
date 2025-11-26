@@ -1,0 +1,23 @@
+@use "../../styles" as *;
+
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.contactForm__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contactForm__success {
+  padding: 12px 16px;
+  background: rgba(22, 163, 74, 0.2);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+  border-radius: 6px;
+  color: var(--color-success);
+  font-size: $font-size-md;
+  text-align: center;
+}

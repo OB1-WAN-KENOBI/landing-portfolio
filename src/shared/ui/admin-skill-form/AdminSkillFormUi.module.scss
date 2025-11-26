@@ -1,0 +1,11 @@
+@use "../../styles" as *;
+
+.skillForm {
+  width: 100%;
+}
+
+.skillForm__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

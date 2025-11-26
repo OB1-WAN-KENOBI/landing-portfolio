@@ -1,0 +1,31 @@
+@use "../../styles" as *;
+
+.text {
+  font-family: $font-body;
+  line-height: $line-height-relaxed;
+  margin: 0 0 $spacing-text-bottom-md 0;
+}
+
+.text--sm {
+  font-size: $font-size-sm;
+}
+
+.text--md {
+  font-size: $font-size-md;
+}
+
+.text--lg {
+  font-size: $font-size-lg;
+}
+
+.text--primary {
+  color: var(--color-text-primary);
+}
+
+.text--secondary {
+  color: var(--color-text-secondary);
+}
+
+.text:last-child {
+  margin-bottom: 0;
+}

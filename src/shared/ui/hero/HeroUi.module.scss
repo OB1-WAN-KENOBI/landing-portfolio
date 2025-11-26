@@ -1,0 +1,84 @@
+@use "../../styles" as *;
+
+.hero {
+  width: 100%;
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden; // чтобы частицы не вылезали
+  background-color: var(--color-bg);
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 24px,
+      rgba(255, 255, 255, 0.03) 25px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 24px,
+      rgba(255, 255, 255, 0.03) 25px
+    );
+  background-position: 0 0, 0 0;
+  background-size: 25px 25px;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  cursor: default;
+
+  * {
+    pointer-events: auto;
+    cursor: default;
+  }
+}
+
+.hero__container {
+  @include container;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.hero__title {
+  font-family: $font-headings;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+}
+
+.hero__title--glow {
+  text-shadow: 0 0 16px rgba(123, 58, 237, 0.5);
+  transition: text-shadow 0.25s ease;
+
+  &:hover {
+    text-shadow: 0 0 20px rgba(123, 58, 237, 0.6);
+  }
+}
+
+.hero__subtitle {
+  font-family: $font-body;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+
+.hero__status {
+  font-family: $font-mono;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-transform: capitalize;
+}
+
+.hero__description {
+  font-family: $font-body;
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+}

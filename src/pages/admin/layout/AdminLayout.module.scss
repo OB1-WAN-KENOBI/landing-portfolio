@@ -1,0 +1,43 @@
+@use "../../../shared/styles" as *;
+
+.adminLayout {
+  display: flex;
+  height: 100vh;
+  background: var(--color-bg);
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+.adminLayout__content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    overflow-y: visible;
+  }
+}
+
+.adminLayout__header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+}
+
+.adminLayout__userInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.adminLayout__userName {
+  font-size: $font-size-md;
+  color: var(--color-text-secondary);
+}

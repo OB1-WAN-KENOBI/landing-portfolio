@@ -1,0 +1,14 @@
+@use "../../styles" as *;
+
+.logo {
+  width: 32px;
+  height: 32px;
+  color: var(--color-text-primary);
+  transition: color 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.logo:hover {
+  color: var(--color-accent);
+  transform: scale(1.05);
+}

@@ -1,0 +1,26 @@
+@use "../../shared/styles" as *;
+
+.skillsList {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.skillsList__category {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.skillsList__categoryTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.skillsList__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}

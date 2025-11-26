@@ -1,0 +1,65 @@
+@use "../../styles" as *;
+
+.skillCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(123, 58, 237, 0.2);
+  }
+}
+
+.skillCard__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skillCard__name {
+  font-family: $font-headings;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.skillCard__level {
+  display: flex;
+  align-items: center;
+}
+
+.skillCard__levelBadge {
+  font-family: $font-mono;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.skillCard__levelBadge--beginner {
+  background: rgba(220, 38, 38, 0.2);
+  color: var(--color-error);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.skillCard__levelBadge--middle {
+  background: rgba(123, 58, 237, 0.2);
+  color: var(--color-accent);
+  border: 1px solid rgba(123, 58, 237, 0.3);
+}
+
+.skillCard__levelBadge--advanced {
+  background: rgba(22, 163, 74, 0.2);
+  color: var(--color-success);
+  border: 1px solid rgba(22, 163, 74, 0.3);
+}

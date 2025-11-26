@@ -1,0 +1,29 @@
+@use "../../shared/styles" as *;
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: $font-body;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.separator {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.active {
+  color: var(--color-accent);
+  font-weight: $font-weight-semibold;
+}

@@ -1,0 +1,70 @@
+@use "../../../shared/styles" as *;
+
+.adminSkillsPage {
+  width: 100%;
+  background: var(--color-bg);
+}
+
+.adminSkillsPage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.adminSkillsPage__filters {
+  margin-bottom: 24px;
+  max-width: 300px;
+}
+
+.adminSkillsPage__row {
+  border-bottom: 1px solid var(--color-border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--color-surface-hover);
+  }
+}
+
+.adminSkillsPage__cell {
+  padding: 16px;
+  font-size: $font-size-md;
+  color: var(--color-text-primary);
+}
+
+.adminSkillsPage__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.adminSkillsPage__actionButton {
+  padding: 6px 12px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  color: var(--color-text-primary);
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent);
+  }
+}
+
+.adminSkillsPage__actionButtonDanger {
+  &:hover {
+    border-color: var(--color-error);
+    color: var(--color-error);
+  }
+}

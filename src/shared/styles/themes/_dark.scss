@@ -1,0 +1,26 @@
+:root.theme-dark {
+  /* Основной фон */
+  --color-bg: #0f0f11;
+  --color-bg-secondary: #16161a;
+
+  /* Текст */
+  --color-text-primary: #e4e4e7;
+  --color-text-secondary: #a1a1aa;
+
+  /* Границы */
+  --color-border: #27272a;
+
+  /* Акцент (тёмно-фиолетовый) */
+  --color-accent: #5b21b6;
+  --color-accent-hover: #6d28d9;
+  --color-accent-dark: #3a0ca3;
+
+  /* Поверхности */
+  --color-surface: #1c1c21;
+  --color-surface-hover: #23232a;
+
+  /* Ошибка / Успех */
+  --color-error: #dc2626;
+  --color-success: #16a34a;
+}
+

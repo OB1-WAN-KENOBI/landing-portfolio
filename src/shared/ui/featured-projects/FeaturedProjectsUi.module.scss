@@ -1,0 +1,62 @@
+@use "../../styles" as *;
+
+.featuredProjects {
+  width: 100%;
+  padding: 80px 0;
+  border-radius: 12px;
+  background: var(--color-bg-secondary);
+}
+
+.featuredProjects__container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: 0 auto;
+}
+
+.featuredProjects__title {
+  font-family: $font-headings;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.featuredProjects__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.featuredProjects__item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 24px;
+  transition: background 0.2s;
+}
+
+.featuredProjects__item:hover {
+  background: var(--color-surface-hover);
+}
+
+.featuredProjects__itemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.featuredProjects__itemTitle {
+  font-family: $font-headings;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.featuredProjects__itemDescription {
+  font-family: $font-body;
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}

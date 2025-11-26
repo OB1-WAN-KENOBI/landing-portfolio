@@ -1,0 +1,57 @@
+@use "../../../shared/styles" as *;
+
+.adminStatusPage {
+  width: 100%;
+  background: var(--color-bg);
+}
+
+.adminStatusPage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.adminStatusPage__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+}
+
+.adminStatusPage__content {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 400px;
+}
+
+.adminStatusPage__current {
+  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adminStatusPage__label {
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  font-weight: $font-weight-medium;
+}
+
+.adminStatusPage__value {
+  font-family: $font-mono;
+  font-size: $font-size-lg;
+  color: var(--color-text-primary);
+  font-weight: $font-weight-semibold;
+}

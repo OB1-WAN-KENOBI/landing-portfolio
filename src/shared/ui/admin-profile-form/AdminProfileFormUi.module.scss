@@ -1,0 +1,27 @@
+@use "../../styles" as *;
+
+.profileForm {
+  width: 100%;
+}
+
+.profileForm__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profileForm__section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.profileForm__sectionTitle {
+  font-family: $font-headings;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-primary);
+  margin: 0 0 8px 0;
+}

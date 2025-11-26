@@ -1,0 +1,18 @@
+@use "../../styles" as *;
+
+.section {
+  width: 100%;
+  padding: 80px 0;
+}
+
+.section__container {
+  @include container;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s ease-out, transform 2s ease-out;
+}
+
+.section__containerVisible {
+  opacity: 1;
+  transform: none;
+}

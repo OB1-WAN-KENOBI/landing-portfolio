@@ -1,0 +1,11 @@
+@use "../../styles" as *;
+
+.projectForm {
+  width: 100%;
+}
+
+.projectForm__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

@@ -1,0 +1,21 @@
+/* Glow Text Effect - свечение для заголовков */
+.title--glow {
+  text-shadow: 0 0 16px rgba(123, 58, 237, 0.5);
+
+  &:hover {
+    text-shadow: 0 0 20px rgba(123, 58, 237, 0.6);
+  }
+}
+
+/* Motion Hover Effect - плавное движение карточек */
+.motion-hover {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(123, 58, 237, 0.2);
+    border-color: var(--color-accent);
+  }
+}
