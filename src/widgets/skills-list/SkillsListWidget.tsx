@@ -1,6 +1,6 @@
 import styles from "./SkillsListWidget.module.scss";
 import SkillCardUi from "../../shared/ui/skill-card/SkillCardUi";
-import type { Skill, SkillCategory } from "../../shared/api/mockData";
+import type { Skill, SkillCategory } from "../../shared/api/domainTypes";
 
 interface SkillsListWidgetProps {
   skills: Skill[];

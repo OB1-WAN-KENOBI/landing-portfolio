@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { projectsApi } from "../../api/http/projectsApi";
 import { normalizeProject } from "../api/normalize";
-import type { Project } from "../../api/mockData";
+import type { Project } from "../../api/domainTypes";
 import type { Language } from "../i18n/i18n";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 

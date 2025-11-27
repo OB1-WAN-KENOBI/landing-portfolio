@@ -8,7 +8,7 @@ import ProjectsListWidget from "../../widgets/projects-list/ProjectsListWidget";
 import { useHead } from "../../app/providers/head/HeadManager";
 import { useProjects } from "../../shared/lib/hooks/useProjects";
 import { useLanguage } from "../../app/providers/language/useLanguage";
-import type { Project } from "../../shared/api/mockData";
+import type { Project } from "../../shared/api/domainTypes";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 

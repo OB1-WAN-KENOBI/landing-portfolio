@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import FiltersUi from "../../shared/ui/filters/FiltersUi";
-import type { Project } from "../../shared/api/mockData";
+import type { Project } from "../../shared/api/domainTypes";
 
 interface ProjectsFiltersWidgetProps {
   projects: Project[];

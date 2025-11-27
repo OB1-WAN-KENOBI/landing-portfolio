@@ -1,5 +1,5 @@
 import styles from "./CoreSkillsUi.module.scss";
-import type { Skill } from "../../api/mockData";
+import type { Skill } from "../../api/domainTypes";
 import { useTranslation } from "../../lib/i18n/useTranslation";
 
 interface CoreSkillsUiProps {

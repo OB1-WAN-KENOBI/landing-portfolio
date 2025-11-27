@@ -1,6 +1,6 @@
 import { memo } from "react";
 import styles from "./SkillCardUi.module.scss";
-import type { SkillLevel } from "../../api/mockData";
+import type { SkillLevel } from "../../api/domainTypes";
 
 interface SkillCardUiProps {
   name: string;

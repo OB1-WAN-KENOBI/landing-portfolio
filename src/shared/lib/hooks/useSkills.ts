@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { skillsApi } from "../../api/http/skillsApi";
 import { normalizeSkill } from "../api/normalize";
-import type { Skill } from "../../api/mockData";
+import type { Skill } from "../../api/domainTypes";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 
 interface UseSkillsOptions {

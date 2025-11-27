@@ -1,6 +1,5 @@
 import type { ApiProject, ApiSkill, ApiProfile } from "../../api/http/types";
-import type { Project, Skill } from "../../api/mockData";
-import type { HeroData } from "../../api/mockData";
+import type { Project, Skill, HeroData } from "../../api/domainTypes";
 import type { Language } from "../../lib/i18n/i18n";
 
 // Type guards для проверки локализованных строк

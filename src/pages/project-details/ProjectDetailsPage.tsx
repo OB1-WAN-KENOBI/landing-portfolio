@@ -6,7 +6,7 @@ import { projectsApi } from "../../shared/api/http/projectsApi";
 import { normalizeProject } from "../../shared/lib/api/normalize";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import { useToast } from "../../app/providers/toast/ToastProvider";
-import type { Project } from "../../shared/api/mockData";
+import type { Project } from "../../shared/api/domainTypes";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 

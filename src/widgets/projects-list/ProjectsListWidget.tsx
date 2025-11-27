@@ -1,6 +1,6 @@
 import ProjectCardUi from "../../shared/ui/project-card/ProjectCardUi";
 import styles from "./ProjectsListWidget.module.scss";
-import type { Project } from "../../shared/api/mockData";
+import type { Project } from "../../shared/api/domainTypes";
 
 interface ProjectsListWidgetProps {
   projects: Project[];
