@@ -10,6 +10,7 @@ export interface ApiProject {
   techStack: string[];
   year: number;
   status: string;
+  url?: string;
   images?: string[];
 }
 

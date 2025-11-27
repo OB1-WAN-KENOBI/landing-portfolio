@@ -5,7 +5,7 @@ import AdminTableUi from "../../../shared/ui/admin-table/AdminTableUi";
 import ButtonUi from "../../../shared/ui/form/ButtonUi";
 import DropdownUi from "../../../shared/ui/dropdown/DropdownUi";
 import SkillsCRUDWidget from "../../../widgets/admin-skills-crud/SkillsCRUDWidget";
-import { mockSkills } from "../../../shared/api/mocks/mockSkills";
+import { skillsApi } from "../../../shared/api/http/skillsApi";
 import { normalizeSkill } from "../../../shared/lib/api/normalize";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import type { ApiSkill } from "../../../shared/api/http/types";
@@ -21,7 +21,7 @@ const AdminSkillsPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    mockSkills
+    skillsApi
       .getAll()
       .then((data) => {
         setApiSkills(data);
@@ -63,7 +63,7 @@ const AdminSkillsPage = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await mockSkills.delete(id);
+      await skillsApi.delete(id);
       const updatedSkills = apiSkills.filter((s) => s.id !== id);
       setApiSkills(updatedSkills);
       showToast("success", "Skill deleted successfully");
@@ -80,7 +80,7 @@ const AdminSkillsPage = () => {
     if (!skill) return;
 
     try {
-      const duplicated = await mockSkills.create({
+      const duplicated = await skillsApi.create({
         name: `${skill.name} (copy)`,
         category: skill.category,
         level: skill.level,

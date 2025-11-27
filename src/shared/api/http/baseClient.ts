@@ -1,34 +1,115 @@
-// TODO: Replace this mock client with real API client after backend is ready
-// This is a placeholder for future API integration
+import { API_BASE_URL } from "../../config/api";
 
-const baseUrl = ""; // Will be set when backend is available
+// Получить токен из localStorage или переменной окружения
+const getAuthToken = (): string | null => {
+  return (
+    localStorage.getItem("admin_token") ||
+    import.meta.env.VITE_ADMIN_TOKEN ||
+    null
+  );
+};
 
 class BaseClient {
-  // baseUrl will be used when real API is implemented
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  constructor(_baseUrl: string = "") {
-    // Will be implemented when backend is ready
+  private baseUrl: string;
+
+  constructor(baseUrl: string = API_BASE_URL) {
+    this.baseUrl = baseUrl;
   }
 
-  async get<T>(_path: string): Promise<T> {
-    // Placeholder for GET request
-    throw new Error("Not implemented - use mocks for now");
+  private async request<T>(
+    path: string,
+    options: RequestInit = {},
+    requireAuth: boolean = false
+  ): Promise<T> {
+    const url = `${this.baseUrl}${path}`;
+
+    const defaultHeaders: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+
+    // Добавляем токен для админских операций
+    if (requireAuth) {
+      const token = getAuthToken();
+      if (token) {
+        defaultHeaders["Authorization"] = `Bearer ${token}`;
+      }
+    }
+
+    const config: RequestInit = {
+      ...options,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
+    };
+
+    try {
+      const response = await fetch(url, config);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Handle empty responses
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return await response.json();
+      }
+
+      return {} as T;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Network error occurred");
+    }
   }
 
-  async post<T>(_path: string, _data: unknown): Promise<T> {
-    // Placeholder for POST request
-    throw new Error("Not implemented - use mocks for now");
+  async get<T>(path: string): Promise<T> {
+    return this.request<T>(path, {
+      method: "GET",
+    });
   }
 
-  async patch<T>(_path: string, _data: unknown): Promise<T> {
-    // Placeholder for PATCH request
-    throw new Error("Not implemented - use mocks for now");
+  async post<T>(
+    path: string,
+    data: unknown,
+    requireAuth: boolean = true
+  ): Promise<T> {
+    return this.request<T>(
+      path,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      },
+      requireAuth
+    );
   }
 
-  async delete<T>(_path: string): Promise<T> {
-    // Placeholder for DELETE request
-    throw new Error("Not implemented - use mocks for now");
+  async patch<T>(
+    path: string,
+    data: unknown,
+    requireAuth: boolean = true
+  ): Promise<T> {
+    return this.request<T>(
+      path,
+      {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      },
+      requireAuth
+    );
+  }
+
+  async delete<T>(path: string, requireAuth: boolean = true): Promise<T> {
+    return this.request<T>(
+      path,
+      {
+        method: "DELETE",
+      },
+      requireAuth
+    );
   }
 }
 
-export const apiClient = new BaseClient(baseUrl);
+export const apiClient = new BaseClient();

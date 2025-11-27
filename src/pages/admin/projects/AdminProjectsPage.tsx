@@ -7,7 +7,7 @@ import InputUi from "../../../shared/ui/form/InputUi";
 import DropdownUi from "../../../shared/ui/dropdown/DropdownUi";
 import PaginationUi from "../../../shared/ui/pagination/PaginationUi";
 import ProjectsCRUDWidget from "../../../widgets/admin-projects-crud/ProjectsCRUDWidget";
-import { mockProjects } from "../../../shared/api/mocks/mockProjects";
+import { projectsApi } from "../../../shared/api/http/projectsApi";
 import { normalizeProject } from "../../../shared/lib/api/normalize";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import { useLanguage } from "../../../app/providers/language/useLanguage";
@@ -27,7 +27,7 @@ const AdminProjectsPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    mockProjects
+    projectsApi
       .getAll()
       .then((data) => {
         setApiProjects(data);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import HeroUi from "../../shared/ui/hero/HeroUi";
-import { mockProfile } from "../../shared/api/mocks/mockProfile";
+import { profileApi } from "../../shared/api/http/profileApi";
 import { mockStatus } from "../../shared/api/mocks/mockStatus";
 import { normalizeProfile } from "../../shared/lib/api/normalize";
 import { useLanguage } from "../../app/providers/language/useLanguage";
@@ -23,7 +23,7 @@ const HeroWidget = () => {
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      mockProfile.get().catch((err) => {
+      profileApi.get().catch((err) => {
         const error =
           err instanceof Error ? err : new Error("Failed to load profile");
         showToast("error", error.message);

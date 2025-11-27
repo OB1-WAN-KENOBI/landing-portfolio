@@ -31,6 +31,9 @@ const AdminProfilePage = lazy(
 const AdminStatusPage = lazy(
   () => import("../../pages/admin/status/AdminStatusPage")
 );
+const AdminSettingsPage = lazy(
+  () => import("../../pages/admin/settings/AdminSettingsPage")
+);
 
 const AppRoutes = () => {
   return (
@@ -54,6 +57,7 @@ const AppRoutes = () => {
                   <Route path="skills" element={<AdminSkillsPage />} />
                   <Route path="profile" element={<AdminProfilePage />} />
                   <Route path="status" element={<AdminStatusPage />} />
+                  <Route path="settings" element={<AdminSettingsPage />} />
                 </Routes>
               </AdminLayout>
             </ProtectedRoute>

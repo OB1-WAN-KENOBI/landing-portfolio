@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import styles from "./AdminDashboardPage.module.scss";
 import TitleUi from "../../../shared/ui/title/TitleUi";
 import StatCardUi from "../../../shared/ui/stat-card/StatCardUi";
-import { mockProjects } from "../../../shared/api/mocks/mockProjects";
-import { mockSkills } from "../../../shared/api/mocks/mockSkills";
+import { projectsApi } from "../../../shared/api/http/projectsApi";
+import { skillsApi } from "../../../shared/api/http/skillsApi";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import type { ApiProject } from "../../../shared/api/http/types";
 import type { ApiSkill } from "../../../shared/api/http/types";
@@ -16,7 +16,7 @@ const AdminDashboardPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([mockProjects.getAll(), mockSkills.getAll()])
+    Promise.all([projectsApi.getAll(), skillsApi.getAll()])
       .then(([projectsData, skillsData]) => {
         setProjects(projectsData);
         setSkills(skillsData);

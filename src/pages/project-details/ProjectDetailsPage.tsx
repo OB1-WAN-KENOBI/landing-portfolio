@@ -2,7 +2,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "./ProjectDetailsPage.module.scss";
 import { useHead } from "../../app/providers/head/HeadManager";
-import { mockProjects } from "../../shared/api/mocks/mockProjects";
+import { projectsApi } from "../../shared/api/http/projectsApi";
 import { normalizeProject } from "../../shared/lib/api/normalize";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import { useToast } from "../../app/providers/toast/ToastProvider";
@@ -26,7 +26,7 @@ const ProjectDetailsPage = () => {
       return;
     }
     setIsLoading(true);
-    mockProjects
+    projectsApi
       .getById(id)
       .then((data) => {
         if (data) {

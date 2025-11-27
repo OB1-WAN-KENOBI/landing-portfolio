@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import styles from "./SkillsCRUDWidget.module.scss";
 import AdminSkillFormUi from "../../shared/ui/admin-skill-form/AdminSkillFormUi";
 import ButtonUi from "../../shared/ui/form/ButtonUi";
-import { mockSkills } from "../../shared/api/mocks/mockSkills";
+import { skillsApi } from "../../shared/api/http/skillsApi";
 import { useToast } from "../../app/providers/toast/ToastProvider";
 import type { ApiSkill } from "../../shared/api/http/types";
 import type {
@@ -74,7 +74,7 @@ const SkillsCRUDWidget = ({
     setIsLoading(true);
     try {
       if (isAdding) {
-        const newSkill = await mockSkills.create({
+        const newSkill = await skillsApi.create({
           name: name.trim(),
           category: category,
           level: level,
@@ -83,7 +83,7 @@ const SkillsCRUDWidget = ({
         showToast("success", "Skill created successfully");
         handleCancel();
       } else if (editingId && editingId !== "new") {
-        const updatedSkill = await mockSkills.update(editingId, {
+        const updatedSkill = await skillsApi.update(editingId, {
           name: name.trim(),
           category: category,
           level: level,

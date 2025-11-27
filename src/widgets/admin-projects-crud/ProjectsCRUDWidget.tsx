@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import AdminModalUi from "../../shared/ui/admin-modal/AdminModalUi";
 import AdminProjectFormUi from "../../shared/ui/admin-project-form/AdminProjectFormUi";
-import { mockProjects } from "../../shared/api/mocks/mockProjects";
+import { projectsApi } from "../../shared/api/http/projectsApi";
 import { useToast } from "../../app/providers/toast/ToastProvider";
 import type { ApiProject } from "../../shared/api/http/types";
 
@@ -97,7 +97,7 @@ const ProjectsCRUDWidget = ({
 
     try {
       if (mode === "add") {
-        const newProject = await mockProjects.create({
+        const newProject = await projectsApi.create({
           title: title.trim(),
           description: description.trim(),
           techStack: techStackArray,
@@ -107,7 +107,7 @@ const ProjectsCRUDWidget = ({
         onProjectsChange([...projects, newProject]);
         showToast("success", "Project created successfully");
       } else if (mode === "edit" && projectId) {
-        const updatedProject = await mockProjects.update(projectId, {
+        const updatedProject = await projectsApi.update(projectId, {
           title: title.trim(),
           description: description.trim(),
           techStack: techStackArray,
@@ -135,7 +135,7 @@ const ProjectsCRUDWidget = ({
     if (!projectId) return;
     setIsLoading(true);
     try {
-      await mockProjects.delete(projectId);
+      await projectsApi.delete(projectId);
       const updatedProjects = projects.filter((p) => p.id !== projectId);
       onProjectsChange(updatedProjects);
       showToast("success", "Project deleted successfully");

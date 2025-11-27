@@ -3,9 +3,12 @@ import ContactFormUi from "../../shared/ui/contact-form/ContactFormUi";
 import { validateEmail } from "../../shared/lib/validation/email";
 import { sanitizeInput } from "../../shared/lib/validation/sanitize";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { contactApi } from "../../shared/api/http/contactApi";
+import { useToast } from "../../app/providers/toast/ToastProvider";
 
 const ContactFormWidget = () => {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -58,7 +61,7 @@ const ContactFormWidget = () => {
     };
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validate()) {
       return;
     }
@@ -70,8 +73,13 @@ const ContactFormWidget = () => {
     const sanitizedEmail = sanitizeInput(email);
     const sanitizedMessage = sanitizeInput(message);
 
-    // Используем санитизированные значения
-    timeoutRef.current = setTimeout(() => {
+    try {
+      await contactApi.send({
+        name: sanitizedName,
+        email: sanitizedEmail,
+        message: sanitizedMessage,
+      });
+
       setIsSubmitting(false);
       setSuccessMessage(t("contact.form.messageSent"));
       setName("");
@@ -83,7 +91,14 @@ const ContactFormWidget = () => {
       successTimeoutRef.current = setTimeout(() => {
         setSuccessMessage(undefined);
       }, 3000);
-    }, 500);
+    } catch (error) {
+      setIsSubmitting(false);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : t("contact.form.error") || "Failed to send message";
+      showToast("error", errorMessage);
+    }
   };
 
   return (

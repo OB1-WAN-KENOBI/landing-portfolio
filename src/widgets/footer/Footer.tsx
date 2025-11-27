@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import FooterUi from "../../shared/ui/footer/FooterUi";
-import { mockProfile } from "../../shared/api/mocks/mockProfile";
+import { profileApi } from "../../shared/api/http/profileApi";
 import { normalizeProfile } from "../../shared/lib/api/normalize";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 
@@ -48,7 +48,7 @@ const Footer = () => {
   } | null>(null);
 
   useEffect(() => {
-    mockProfile.get().then((data) => {
+    profileApi.get().then((data) => {
       const normalized = normalizeProfile(data, language);
       setProfile({
         name: data.name,

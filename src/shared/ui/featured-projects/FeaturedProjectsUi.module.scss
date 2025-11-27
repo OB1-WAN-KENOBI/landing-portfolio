@@ -39,6 +39,9 @@
 
 .featuredProjects__item:hover {
   background: var(--color-surface-hover);
+  border-color: var(--color-accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(123, 58, 237, 0.2);
 }
 
 .featuredProjects__itemContent {

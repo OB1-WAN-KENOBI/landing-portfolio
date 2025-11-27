@@ -3,7 +3,7 @@ import styles from "./AdminProfilePage.module.scss";
 import TitleUi from "../../../shared/ui/title/TitleUi";
 import ButtonUi from "../../../shared/ui/form/ButtonUi";
 import AdminProfileFormUi from "../../../shared/ui/admin-profile-form/AdminProfileFormUi";
-import { mockProfile } from "../../../shared/api/mocks/mockProfile";
+import { profileApi } from "../../../shared/api/http/profileApi";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import { useLanguage } from "../../../app/providers/language/useLanguage";
 import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
@@ -28,7 +28,7 @@ const AdminProfilePage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    mockProfile
+    profileApi
       .get()
       .then((data) => {
         setName(data.name);
@@ -74,7 +74,7 @@ const AdminProfilePage = () => {
 
     setIsSaving(true);
     try {
-      await mockProfile.update({
+      await profileApi.update({
         name: name.trim(),
         role: {
           ru: role.trim(),

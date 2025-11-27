@@ -15,4 +15,7 @@
 .section__containerVisible {
   opacity: 1;
   transform: none;
+  display: flex;
+    flex-direction: column;
+    gap: 15px;
 }

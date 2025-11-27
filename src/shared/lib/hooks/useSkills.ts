@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { mockSkills } from "../../api/mocks/mockSkills";
+import { skillsApi } from "../../api/http/skillsApi";
 import { normalizeSkill } from "../api/normalize";
 import type { Skill } from "../../api/mockData";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
@@ -20,7 +20,7 @@ export const useSkills = (options: UseSkillsOptions = {}) => {
     setIsLoading(true);
     setError(null);
 
-    mockSkills
+    skillsApi
       .getAll()
       .then((data) => {
         const normalized = data.map(normalizeSkill);

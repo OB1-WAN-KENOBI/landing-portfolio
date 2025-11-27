@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { mockProfile } from "../../api/mocks/mockProfile";
+import { profileApi } from "../../api/http/profileApi";
 import { normalizeProfile } from "../api/normalize";
 import type { Language } from "../i18n/i18n";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
@@ -28,7 +28,7 @@ export const useProfile = (language: Language = "ru"): UseProfileResult => {
     setIsLoading(true);
     setError(null);
 
-    mockProfile
+    profileApi
       .get()
       .then((data) => {
         const normalized = normalizeProfile(data, language);
