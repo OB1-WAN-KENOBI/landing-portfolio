@@ -33,16 +33,24 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const STORAGE_KEY = "portfolio_auth_user";
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<ApiUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Не выполняем ping автоматически, чтобы не создавать 401 в консоли у гостей
-    setLoading(false);
+    const checkSession = async () => {
+      try {
+        const currentUser = await authApi.ping();
+        setUser(currentUser);
+      } catch {
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void checkSession();
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -50,9 +58,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
 
     try {
-      await authApi.login(email, password);
-      const userData: ApiUser = { id: email, name: email, email, role: "admin" };
-      setUser(userData);
+      const authenticatedUser = await authApi.login(email, password);
+      setUser(authenticatedUser);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);

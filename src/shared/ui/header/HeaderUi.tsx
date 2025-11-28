@@ -54,7 +54,9 @@ const HeaderUi = ({
       <div className={styles.right}>
         {languageToggle}
         {themeToggle}
-        <button className={styles.button}>{t("nav.contact")}</button>
+        <Link to="/contact" className={styles.button}>
+          {t("nav.contact")}
+        </Link>
       </div>
     </header>
   );

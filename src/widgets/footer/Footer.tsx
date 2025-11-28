@@ -48,14 +48,23 @@ const Footer = () => {
   } | null>(null);
 
   useEffect(() => {
-    profileApi.get().then((data) => {
-      const normalized = normalizeProfile(data, language);
-      setProfile({
-        name: data.name,
-        role: normalized.role,
-        socials: data.socials,
-      });
-    });
+    const fetchProfile = async () => {
+      try {
+        const data = await profileApi.get();
+        const normalized = normalizeProfile(data, language);
+        setProfile({
+          name: data.name,
+          role: normalized.role,
+          socials: data.socials,
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error("Failed to load profile for footer", error);
+        setProfile(null);
+      }
+    };
+
+    void fetchProfile();
   }, [language]);
 
   if (!profile) {

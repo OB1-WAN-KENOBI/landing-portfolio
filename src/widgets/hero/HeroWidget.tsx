@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import HeroUi from "../../shared/ui/hero/HeroUi";
 import { profileApi } from "../../shared/api/http/profileApi";
-import { mockStatus } from "../../shared/api/mocks/mockStatus";
+import { statusApi } from "../../shared/api/http/statusApi";
 import { normalizeProfile } from "../../shared/lib/api/normalize";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import { useToast } from "../../app/providers/toast/ToastProvider";
@@ -29,7 +29,7 @@ const HeroWidget = () => {
         showToast("error", error.message);
         return null;
       }),
-      mockStatus.get().catch((err) => {
+      statusApi.get().catch((err) => {
         const error =
           err instanceof Error ? err : new Error("Failed to load status");
         showToast("error", error.message);

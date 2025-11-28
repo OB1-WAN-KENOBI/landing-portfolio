@@ -4,7 +4,7 @@ import TitleUi from "../../../shared/ui/title/TitleUi";
 import InputUi from "../../../shared/ui/form/InputUi";
 import DropdownUi from "../../../shared/ui/dropdown/DropdownUi";
 import ButtonUi from "../../../shared/ui/form/ButtonUi";
-import { mockStatus } from "../../../shared/api/mocks/mockStatus";
+import { statusApi } from "../../../shared/api/http/statusApi";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
 import type { ApiStatus } from "../../../shared/api/http/types";
 import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
@@ -25,7 +25,7 @@ const AdminStatusPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    mockStatus
+    statusApi
       .get()
       .then((data) => {
         setStatus(data.status);
@@ -48,7 +48,7 @@ const AdminStatusPage = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      await mockStatus.update({
+      await statusApi.update({
         status,
         message: message.trim()
           ? {

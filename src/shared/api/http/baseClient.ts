@@ -1,15 +1,5 @@
 import { API_BASE_URL } from "../../config/api";
 
-// Читаем токен только из sessionStorage, чтобы не класть секрет в бандл
-const getAuthToken = (): string | null => {
-  try {
-    return sessionStorage.getItem("admin_token");
-  } catch {
-    // Доступ к storage может быть недоступен (например, SSR или блокировка)
-    return null;
-  }
-};
-
 class BaseClient {
   private baseUrl: string;
 
@@ -28,14 +18,6 @@ class BaseClient {
       "Content-Type": "application/json",
     };
 
-    // Добавляем токен для админских операций
-    if (requireAuth) {
-      const token = getAuthToken();
-      if (token) {
-        defaultHeaders["Authorization"] = `Bearer ${token}`;
-      }
-    }
-
     const config: RequestInit = {
       ...options,
       credentials: requireAuth ? options.credentials ?? "include" : options.credentials,
@@ -45,34 +27,32 @@ class BaseClient {
       },
     };
 
-    try {
-      const response = await fetch(url, config);
+    const response = await fetch(url, config);
 
-      if (!response.ok) {
-        // Не бросаем для ожидаемых 401/403 на ping, чтобы не засорять консоль гостям
-        if (
-          !requireAuth &&
-          options.credentials === "include" &&
-          (response.status === 401 || response.status === 403)
-        ) {
-          return {} as T;
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      // Handle empty responses
+    if (!response.ok) {
+      let errorMessage = `HTTP error! status: ${response.status}`;
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
-        return await response.json();
+        try {
+          const errorBody = (await response.json()) as { error?: string };
+          if (errorBody?.error) {
+            errorMessage = errorBody.error;
+          }
+        } catch {
+          // fallback на дефолтное сообщение
+        }
       }
-
-      return {} as T;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error("Network error occurred");
+      throw new Error(errorMessage);
     }
+
+    // Handle empty responses
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return (await response.json()) as T;
+    }
+
+    // 204 / пустые ответы
+    return {} as T;
   }
 
   async get<T>(path: string, options: RequestInit = {}): Promise<T> {
