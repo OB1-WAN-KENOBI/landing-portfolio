@@ -8,6 +8,7 @@ export type ProfilePreview = {
   name: string;
   role: string;
   description: string;
+  photoUrl?: string;
 };
 
 interface UseProfileResult {
@@ -36,6 +37,7 @@ export const useProfile = (language: Language = "ru"): UseProfileResult => {
           name: normalized.name,
           role: normalized.role,
           description: normalized.description,
+          photoUrl: normalized.photoUrl,
         });
         setAboutTexts(normalized.aboutTexts);
       })

@@ -1,14 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./ProjectsPage.module.scss";
 import SectionUi from "../../shared/ui/section/SectionUi";
 import TitleUi from "../../shared/ui/title/TitleUi";
-import ProjectsFiltersWidget from "../../widgets/projects-filters/ProjectsFiltersWidget";
 import ProjectsListWidget from "../../widgets/projects-list/ProjectsListWidget";
 import { useHead } from "../../app/providers/head/HeadManager";
 import { useProjects } from "../../shared/lib/hooks/useProjects";
 import { useLanguage } from "../../app/providers/language/useLanguage";
-import type { Project } from "../../shared/api/domainTypes";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
@@ -19,18 +17,7 @@ const ProjectsPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { projects, isLoading } = useProjects({ language });
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   usePageLoaderEffect(isLoading);
-
-  const handleFilteredProjectsChange = useCallback((filtered: Project[]) => {
-    setFilteredProjects(filtered);
-  }, []);
-
-  useEffect(() => {
-    if (projects.length > 0) {
-      setFilteredProjects(projects);
-    }
-  }, [projects]);
 
   useEffect(() => {
     const url = getPageUrl(location.pathname);
@@ -58,11 +45,7 @@ const ProjectsPage = () => {
     <div className={styles.projectsPage}>
       <SectionUi>
         <TitleUi variant="h1">{t("page.projects")}</TitleUi>
-        <ProjectsFiltersWidget
-          projects={projects}
-          onFilteredProjectsChange={handleFilteredProjectsChange}
-        />
-        <ProjectsListWidget projects={filteredProjects} />
+        <ProjectsListWidget projects={projects} />
       </SectionUi>
     </div>
   );

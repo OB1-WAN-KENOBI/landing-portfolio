@@ -25,3 +25,77 @@
   color: var(--color-text-primary);
   margin: 0 0 8px 0;
 }
+
+.profileForm__photoRow {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.profileForm__photoInput {
+  flex: 1;
+  min-width: 240px;
+}
+
+.profileForm__fileButton {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-hover);
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.profileForm__fileButtonDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.profileForm__photoNote {
+  margin: 8px 0 0;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+}
+
+.profileForm__photoPreview {
+  width: 140px;
+  height: 140px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profileForm__photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileForm__photoPlaceholder {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 8px;
+}

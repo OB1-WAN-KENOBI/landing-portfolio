@@ -93,11 +93,16 @@ export const normalizeProfile = (
   const aboutTexts = getLocalizedArray(apiProfile.aboutTexts, lang);
   const role = getLocalizedValue(apiProfile.role, lang);
   const description = getLocalizedValue(apiProfile.description, lang);
+  const photoUrl =
+    typeof apiProfile.photoUrl === "string" && apiProfile.photoUrl.trim()
+      ? apiProfile.photoUrl.trim()
+      : undefined;
 
   return {
     name: apiProfile.name || "",
     role,
     description,
     aboutTexts,
+    photoUrl,
   };
 };

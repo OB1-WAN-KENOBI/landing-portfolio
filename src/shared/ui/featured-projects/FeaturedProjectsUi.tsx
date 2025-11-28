@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./FeaturedProjectsUi.module.scss";
 import { useTranslation } from "../../lib/i18n/useTranslation";
 
@@ -22,7 +23,11 @@ const FeaturedProjectsUi = ({ projects }: FeaturedProjectsUiProps) => {
         </h2>
         <div className={styles.featuredProjects__grid}>
           {projects.map((project) => (
-            <div key={project.id} className={styles.featuredProjects__item}>
+            <Link
+              key={project.id}
+              to={`/projects/${project.id}`}
+              className={styles.featuredProjects__item}
+            >
               <div className={styles.featuredProjects__itemContent}>
                 <h3 className={styles.featuredProjects__itemTitle}>
                   {project.title}
@@ -31,7 +36,7 @@ const FeaturedProjectsUi = ({ projects }: FeaturedProjectsUiProps) => {
                   {project.description}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

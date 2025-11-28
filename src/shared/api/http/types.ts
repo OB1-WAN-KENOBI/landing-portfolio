@@ -34,6 +34,7 @@ export interface ApiProfile {
     ru: string;
     en: string;
   };
+  photoUrl?: string;
   aboutTexts: {
     ru: string[];
     en: string[];

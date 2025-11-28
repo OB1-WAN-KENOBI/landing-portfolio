@@ -5,6 +5,7 @@ export interface HeroData {
   name: string;
   role: string;
   description: string;
+  photoUrl?: string;
 }
 
 export interface Project {
@@ -26,4 +27,3 @@ export interface Skill {
   category: SkillCategory;
   level: SkillLevel;
 }
-

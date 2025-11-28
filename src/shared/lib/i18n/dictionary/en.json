@@ -3,6 +3,8 @@
   "nav.skills": "Skills",
   "nav.about": "About",
   "nav.contact": "Contact",
+  "nav.openMenu": "Open menu",
+  "nav.closeMenu": "Close menu",
   "footer.rights": "All rights reserved",
   "hero.status.available": "Available",
   "hero.status.busy": "Busy",
@@ -82,5 +84,6 @@
   "meta.contact.description": "Get in touch with me for collaboration or inquiries",
   "meta.projectNotFound.title": "Project Not Found | Portfolio",
   "meta.projectNotFound.description": "The project you're looking for doesn't exist.",
-  "common.loading": "Loading..."
+  "common.loading": "Loading...",
+  "common.back": "Back"
 }

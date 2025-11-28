@@ -13,6 +13,7 @@ const HeroWidget = () => {
     name: string;
     role: string;
     description: string;
+    photoUrl?: string;
   } | null>(null);
   const [status, setStatus] = useState<{
     status: "Available" | "Busy" | "Not taking projects";
@@ -42,6 +43,7 @@ const HeroWidget = () => {
           name: normalized.name,
           role: normalized.role,
           description: normalized.description,
+          photoUrl: normalized.photoUrl,
         });
       }
       if (statusData) {

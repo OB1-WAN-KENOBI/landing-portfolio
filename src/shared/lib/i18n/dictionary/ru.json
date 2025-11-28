@@ -3,6 +3,8 @@
   "nav.skills": "Навыки",
   "nav.about": "О себе",
   "nav.contact": "Контакты",
+  "nav.openMenu": "Открыть меню",
+  "nav.closeMenu": "Закрыть меню",
   "footer.rights": "Все права защищены",
   "hero.status.available": "Доступен",
   "hero.status.busy": "Занят",
@@ -82,5 +84,6 @@
   "meta.contact.description": "Свяжитесь со мной для сотрудничества или вопросов",
   "meta.projectNotFound.title": "Проект не найден | Портфолио",
   "meta.projectNotFound.description": "Проект, который вы ищете, не существует.",
-  "common.loading": "Загрузка..."
+  "common.loading": "Загрузка...",
+  "common.back": "Назад"
 }

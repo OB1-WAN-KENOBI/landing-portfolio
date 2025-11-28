@@ -1,4 +1,4 @@
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "./ProjectDetailsPage.module.scss";
 import { useHead } from "../../app/providers/head/HeadManager";
@@ -14,6 +14,7 @@ import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderP
 const ProjectDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
+  const navigate = useNavigate();
   const { language } = useLanguage();
   const { t } = useTranslation();
   const { setTitle, setDescription, setOpenGraph } = useHead();
@@ -69,6 +70,14 @@ const ProjectDetailsPage = () => {
     language,
   ]);
 
+  const handleBackClick = () => {
+    if (window.history.length > 2) {
+      navigate(-1);
+    } else {
+      navigate("/projects");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className={styles.projectDetailsPage}>
@@ -99,6 +108,17 @@ const ProjectDetailsPage = () => {
   return (
     <div className={styles.projectDetailsPage}>
       <div className={styles.projectDetailsPage__container}>
+        <button
+          type="button"
+          className={styles.projectDetailsPage__back}
+          onClick={handleBackClick}
+        >
+          <span
+            className={styles.projectDetailsPage__backIcon}
+            aria-hidden="true"
+          />
+          {t("common.back")}
+        </button>
         <div className={styles.projectDetailsPage__content}>
           <div className={styles.projectDetailsPage__main}>
             <h1 className={styles.projectDetailsPage__title}>

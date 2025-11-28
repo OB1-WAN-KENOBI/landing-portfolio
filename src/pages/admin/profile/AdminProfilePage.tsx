@@ -15,6 +15,9 @@ const AdminProfilePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [name, setName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoData, setPhotoData] = useState<string | null>(null);
+  const [photoPreview, setPhotoPreview] = useState("");
   const [role, setRole] = useState("");
   const [description, setDescription] = useState("");
   const [github, setGithub] = useState("");
@@ -40,6 +43,10 @@ const AdminProfilePage = () => {
             : data.description;
         setRole(roleValue);
         setDescription(descriptionValue);
+        const url = data.photoUrl || "";
+        setPhotoUrl(url);
+        setPhotoPreview(url);
+        setPhotoData(null);
         setGithub(data.socials?.github || "");
         setLinkedin(data.socials?.linkedin || "");
         setTelegram(data.socials?.telegram || "");
@@ -74,7 +81,7 @@ const AdminProfilePage = () => {
 
     setIsSaving(true);
     try {
-      await profileApi.update({
+      const updated = await profileApi.update({
         name: name.trim(),
         role: {
           ru: role.trim(),
@@ -84,12 +91,18 @@ const AdminProfilePage = () => {
           ru: description.trim(),
           en: description.trim(),
         },
+        photoUrl: photoUrl.trim(),
+        photoData: photoData || undefined,
         socials: {
           github: github.trim() || undefined,
           linkedin: linkedin.trim() || undefined,
           telegram: telegram.trim() || undefined,
         },
       });
+      const updatedPhoto = updated.photoUrl || "";
+      setPhotoUrl(updatedPhoto);
+      setPhotoPreview(updatedPhoto);
+      setPhotoData(null);
       showToast("success", t("toast.profile.updated"));
     } catch (error) {
       showToast(
@@ -122,6 +135,8 @@ const AdminProfilePage = () => {
         name={name}
         role={role}
         description={description}
+        photoUrl={photoUrl}
+        photoPreview={photoPreview}
         github={github}
         linkedin={linkedin}
         telegram={telegram}
@@ -129,6 +144,35 @@ const AdminProfilePage = () => {
         onNameChange={setName}
         onRoleChange={setRole}
         onDescriptionChange={setDescription}
+        onPhotoUrlChange={(value) => {
+          setPhotoUrl(value);
+          if (!photoData) {
+            setPhotoPreview(value);
+          }
+        }}
+        onPhotoFileSelect={(file) => {
+          if (!file) {
+            setPhotoData(null);
+            setPhotoPreview(photoUrl);
+            return;
+          }
+          if (!file.type.startsWith("image/")) {
+            showToast("error", "Можно загружать только изображения");
+            return;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            showToast("error", "Максимальный размер файла 5MB");
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result as string;
+            setPhotoPreview(result);
+            setPhotoData(result);
+          };
+          reader.readAsDataURL(file);
+        }}
         onGithubChange={setGithub}
         onLinkedinChange={setLinkedin}
         onTelegramChange={setTelegram}
