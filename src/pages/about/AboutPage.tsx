@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import styles from "./AboutPage.module.scss";
 import TitleUi from "../../shared/ui/title/TitleUi";
@@ -10,6 +10,7 @@ import { useLanguage } from "../../app/providers/language/useLanguage";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
 import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
+import profileImg from "../../assets/img/img.png";
 
 const AboutPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
@@ -33,11 +34,6 @@ const AboutPage = () => {
   );
 
   const isLoading = isLoadingProfile || isLoadingSkills;
-  const [isPhotoError, setIsPhotoError] = useState(false);
-
-  useEffect(() => {
-    setIsPhotoError(false);
-  }, [profile?.photoUrl]);
 
   useEffect(() => {
     if (profile && aboutTexts.length > 0) {
@@ -80,18 +76,11 @@ const AboutPage = () => {
 
         <div className={styles.aboutPage__content}>
           <div className={styles.aboutPage__photo}>
-            {profile.photoUrl && !isPhotoError ? (
-              <img
-                src={profile.photoUrl}
-                alt={`${profile.name} ${t("about.profilePhoto")}`}
-                className={styles.aboutPage__photoImage}
-                onError={() => setIsPhotoError(true)}
-              />
-            ) : (
-              <div className={styles.aboutPage__photoPlaceholder}>
-                {t("about.profilePhoto")}
-              </div>
-            )}
+            <img
+              src={profileImg}
+              alt={`${profile.name} ${t("about.profilePhoto")}`}
+              className={styles.aboutPage__photoImage}
+            />
           </div>
 
           <div className={styles.aboutPage__info}>
