@@ -1,6 +1,7 @@
 import type { ApiProject, ApiSkill, ApiProfile } from "../../api/http/types";
 import type { Project, Skill, HeroData } from "../../api/domainTypes";
 import type { Language } from "../../lib/i18n/i18n";
+import { API_BASE_URL } from "../../config/api";
 
 // Type guards для проверки локализованных строк
 function isLocalizedString(value: unknown): value is Record<Language, string> {
@@ -93,10 +94,25 @@ export const normalizeProfile = (
   const aboutTexts = getLocalizedArray(apiProfile.aboutTexts, lang);
   const role = getLocalizedValue(apiProfile.role, lang);
   const description = getLocalizedValue(apiProfile.description, lang);
-  const photoUrl =
-    typeof apiProfile.photoUrl === "string" && apiProfile.photoUrl.trim()
-      ? apiProfile.photoUrl.trim()
-      : undefined;
+  const resolvePhotoUrl = (url: unknown): string | undefined => {
+    if (typeof url !== "string") return undefined;
+    const trimmed = url.trim();
+    if (!trimmed) return undefined;
+    // Абсолютные ссылки без изменений
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    // Файлы, лежащие на фронте (public), можно отдавать как есть
+    if (trimmed.startsWith("/") && !trimmed.startsWith("/uploads")) {
+      return trimmed;
+    }
+    // Относительные ссылки для бэка (например /uploads/...)
+    try {
+      const base = new URL(API_BASE_URL);
+      return `${base.origin}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
+    } catch {
+      return trimmed;
+    }
+  };
+  const photoUrl = resolvePhotoUrl(apiProfile.photoUrl);
 
   return {
     name: apiProfile.name || "",
