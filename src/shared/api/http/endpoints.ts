@@ -4,5 +4,7 @@ export const endpoints = {
   contact: "/contact",
   profile: "/profile",
   status: "/status",
+  adminPing: "/admin/ping",
+  adminLogin: "/admin/login",
+  adminLogout: "/admin/logout",
 } as const;
-

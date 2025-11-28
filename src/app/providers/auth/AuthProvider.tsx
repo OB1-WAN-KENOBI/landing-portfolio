@@ -7,8 +7,7 @@ import {
 } from "react";
 import type { ReactNode } from "react";
 import type { ApiUser } from "../../../shared/api/http/types";
-import { mockAuth } from "../../../shared/api/mocks/mockAuth";
-import { storage } from "../../../shared/lib/storage/localStorage";
+import { authApi } from "../../../shared/api/http/authApi";
 
 interface AuthContextType {
   user: ApiUser | null;
@@ -41,32 +40,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Восстанавливаем user из localStorage при инициализации
   useEffect(() => {
-    const validator = (value: unknown): value is ApiUser => {
-      return (
-        typeof value === "object" &&
-        value !== null &&
-        "id" in value &&
-        "name" in value &&
-        "email" in value &&
-        "role" in value &&
-        typeof (value as ApiUser).id === "string" &&
-        typeof (value as ApiUser).name === "string" &&
-        typeof (value as ApiUser).email === "string" &&
-        ((value as ApiUser).role === "admin" ||
-          (value as ApiUser).role === "user")
-      );
-    };
-
-    const storedUser = storage.get<ApiUser | null>(
-      STORAGE_KEY,
-      null,
-      validator
-    );
-    if (storedUser) {
-      setUser(storedUser);
-    }
+    // Не выполняем ping автоматически, чтобы не создавать 401 в консоли у гостей
     setLoading(false);
   }, []);
 
@@ -75,9 +50,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
 
     try {
-      const userData = await mockAuth.login(email, password);
+      await authApi.login(email, password);
+      const userData: ApiUser = { id: email, name: email, email, role: "admin" };
       setUser(userData);
-      storage.set(STORAGE_KEY, userData);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Login failed";
       setError(errorMessage);
@@ -92,9 +67,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
 
     try {
-      await mockAuth.logout();
+      await authApi.logout();
       setUser(null);
-      storage.remove(STORAGE_KEY);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Logout failed";
       setError(errorMessage);

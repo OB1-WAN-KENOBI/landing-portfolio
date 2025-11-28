@@ -1,12 +1,13 @@
 import { API_BASE_URL } from "../../config/api";
 
-// Получить токен из localStorage или переменной окружения
+// Читаем токен только из sessionStorage, чтобы не класть секрет в бандл
 const getAuthToken = (): string | null => {
-  return (
-    localStorage.getItem("admin_token") ||
-    import.meta.env.VITE_ADMIN_TOKEN ||
-    null
-  );
+  try {
+    return sessionStorage.getItem("admin_token");
+  } catch {
+    // Доступ к storage может быть недоступен (например, SSR или блокировка)
+    return null;
+  }
 };
 
 class BaseClient {
@@ -37,6 +38,7 @@ class BaseClient {
 
     const config: RequestInit = {
       ...options,
+      credentials: requireAuth ? options.credentials ?? "include" : options.credentials,
       headers: {
         ...defaultHeaders,
         ...options.headers,
@@ -47,6 +49,14 @@ class BaseClient {
       const response = await fetch(url, config);
 
       if (!response.ok) {
+        // Не бросаем для ожидаемых 401/403 на ping, чтобы не засорять консоль гостям
+        if (
+          !requireAuth &&
+          options.credentials === "include" &&
+          (response.status === 401 || response.status === 403)
+        ) {
+          return {} as T;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -65,22 +75,29 @@ class BaseClient {
     }
   }
 
-  async get<T>(path: string): Promise<T> {
-    return this.request<T>(path, {
-      method: "GET",
-    });
+  async get<T>(path: string, options: RequestInit = {}): Promise<T> {
+    return this.request<T>(
+      path,
+      {
+        method: "GET",
+        ...options,
+      },
+      Boolean(options.credentials === "include")
+    );
   }
 
   async post<T>(
     path: string,
     data: unknown,
-    requireAuth: boolean = true
+    requireAuth: boolean = true,
+    options: RequestInit = {}
   ): Promise<T> {
     return this.request<T>(
       path,
       {
         method: "POST",
         body: JSON.stringify(data),
+        ...options,
       },
       requireAuth
     );
@@ -89,23 +106,30 @@ class BaseClient {
   async patch<T>(
     path: string,
     data: unknown,
-    requireAuth: boolean = true
+    requireAuth: boolean = true,
+    options: RequestInit = {}
   ): Promise<T> {
     return this.request<T>(
       path,
       {
         method: "PATCH",
         body: JSON.stringify(data),
+        ...options,
       },
       requireAuth
     );
   }
 
-  async delete<T>(path: string, requireAuth: boolean = true): Promise<T> {
+  async delete<T>(
+    path: string,
+    requireAuth: boolean = true,
+    options: RequestInit = {}
+  ): Promise<T> {
     return this.request<T>(
       path,
       {
         method: "DELETE",
+        ...options,
       },
       requireAuth
     );
