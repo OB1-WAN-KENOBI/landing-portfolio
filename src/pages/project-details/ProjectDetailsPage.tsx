@@ -9,6 +9,7 @@ import { useToast } from "../../app/providers/toast/ToastProvider";
 import type { Project } from "../../shared/api/domainTypes";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
 
 const ProjectDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +20,7 @@ const ProjectDetailsPage = () => {
   const { showToast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  usePageLoaderEffect(isLoading);
 
   useEffect(() => {
     if (!id) {

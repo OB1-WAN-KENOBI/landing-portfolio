@@ -3,12 +3,10 @@ import styles from "./AdminSettingsPage.module.scss";
 import TitleUi from "../../../shared/ui/title/TitleUi";
 import ButtonUi from "../../../shared/ui/form/ButtonUi";
 import { useToast } from "../../../app/providers/toast/ToastProvider";
-import { useTranslation } from "../../../shared/lib/i18n/useTranslation";
 import { authApi } from "../../../shared/api/http/authApi";
 import { useAuth } from "../../../app/providers/auth/AuthProvider";
 
 const AdminSettingsPage = () => {
-  const { t } = useTranslation();
   const { showToast } = useToast();
   const [isSaving, setIsSaving] = useState(false);
   const { logout, isAuthenticated } = useAuth();

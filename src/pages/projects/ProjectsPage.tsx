@@ -11,6 +11,7 @@ import { useLanguage } from "../../app/providers/language/useLanguage";
 import type { Project } from "../../shared/api/domainTypes";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
 
 const ProjectsPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
@@ -19,6 +20,7 @@ const ProjectsPage = () => {
   const location = useLocation();
   const { projects, isLoading } = useProjects({ language });
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  usePageLoaderEffect(isLoading);
 
   const handleFilteredProjectsChange = useCallback((filtered: Project[]) => {
     setFilteredProjects(filtered);

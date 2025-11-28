@@ -17,6 +17,7 @@ import {
   getPageUrl,
 } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
 
 const HomePage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
@@ -43,6 +44,7 @@ const HomePage = () => {
   } = useProfile(language);
 
   const isLoading = isLoadingProjects || isLoadingSkills || isLoadingProfile;
+  usePageLoaderEffect(isLoading);
 
   useEffect(() => {
     if (profile) {

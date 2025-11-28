@@ -9,6 +9,11 @@
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+.app__main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
 .app__content {
   flex: 1 1 auto;
   overflow: hidden;

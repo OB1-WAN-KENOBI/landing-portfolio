@@ -6,12 +6,14 @@ import { useHead } from "../../app/providers/head/HeadManager";
 import { useSkills } from "../../shared/lib/hooks/useSkills";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
 
 const SkillsPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
   const { t, language } = useTranslation();
   const location = useLocation();
   const { skills, isLoading } = useSkills();
+  usePageLoaderEffect(isLoading);
 
   useEffect(() => {
     const url = getPageUrl(location.pathname);

@@ -9,6 +9,7 @@ import { useSkills } from "../../shared/lib/hooks/useSkills";
 import { useLanguage } from "../../app/providers/language/useLanguage";
 import { getPageUrl } from "../../shared/lib/constants";
 import { useTranslation } from "../../shared/lib/i18n/useTranslation";
+import { usePageLoaderEffect } from "../../app/providers/page-loader/PageLoaderProvider";
 
 const AboutPage = () => {
   const { setTitle, setDescription, setOpenGraph } = useHead();
@@ -21,6 +22,7 @@ const AboutPage = () => {
     isLoading: isLoadingProfile,
   } = useProfile(language);
   const { skills, isLoading: isLoadingSkills } = useSkills();
+  usePageLoaderEffect(isLoadingProfile || isLoadingSkills);
 
   const frontendSkills = useMemo(
     () =>
