@@ -84,6 +84,7 @@ const AdminSkillsPage = () => {
         name: `${skill.name} (copy)`,
         category: skill.category,
         level: skill.level,
+        isCore: false,
       });
       setApiSkills([...apiSkills, duplicated]);
       showToast("success", "Skill duplicated successfully");
@@ -91,6 +92,27 @@ const AdminSkillsPage = () => {
       showToast(
         "error",
         error instanceof Error ? error.message : "Failed to duplicate skill"
+      );
+    }
+  };
+
+  const handleToggleCore = async (id: string, currentValue: boolean) => {
+    try {
+      const updated = await skillsApi.update(id, { isCore: !currentValue });
+      const updatedSkills = apiSkills.map((skill) =>
+        skill.id === id ? updated : skill
+      );
+      setApiSkills(updatedSkills);
+      showToast(
+        "success",
+        !currentValue
+          ? "Skill will be shown on homepage"
+          : "Skill removed from homepage"
+      );
+    } catch (error) {
+      showToast(
+        "error",
+        error instanceof Error ? error.message : "Failed to update skill"
       );
     }
   };
@@ -132,7 +154,7 @@ const AdminSkillsPage = () => {
         onEditCancel={handleEditCancel}
       />
       <AdminTableUi
-        headers={["Name", "Category", "Level", "Actions"]}
+        headers={["Name", "Category", "Level", "Homepage", "Actions"]}
         enableAutoAnimate={true}
       >
         {filteredSkills.map((skill) => (
@@ -140,6 +162,9 @@ const AdminSkillsPage = () => {
             <td className={styles.adminSkillsPage__cell}>{skill.name}</td>
             <td className={styles.adminSkillsPage__cell}>{skill.category}</td>
             <td className={styles.adminSkillsPage__cell}>{skill.level}</td>
+            <td className={styles.adminSkillsPage__cell}>
+              {skill.isCore ? "Yes" : "No"}
+            </td>
             <td className={styles.adminSkillsPage__cell}>
               <div className={styles.adminSkillsPage__actions}>
                 <button
@@ -153,6 +178,12 @@ const AdminSkillsPage = () => {
                   onClick={() => handleDuplicate(skill.id)}
                 >
                   Duplicate
+                </button>
+                <button
+                  className={styles.adminSkillsPage__actionButton}
+                  onClick={() => handleToggleCore(skill.id, Boolean(skill.isCore))}
+                >
+                  {skill.isCore ? "Hide from homepage" : "Show on homepage"}
                 </button>
                 <button
                   className={`${styles.adminSkillsPage__actionButton} ${styles.adminSkillsPage__actionButtonDanger}`}

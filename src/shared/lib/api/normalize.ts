@@ -82,6 +82,7 @@ export const normalizeSkill = (apiSkill: ApiSkill): Skill => {
     name: apiSkill.name,
     category: apiSkill.category,
     level: apiSkill.level,
+    isCore: Boolean(apiSkill.isCore),
   };
 };
 

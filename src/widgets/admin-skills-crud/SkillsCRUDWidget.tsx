@@ -41,6 +41,7 @@ const SkillsCRUDWidget = ({
   const [level, setLevel] = useState<ApiSkillLevel>(
     editingSkill?.level || "middle"
   );
+  const [isCore, setIsCore] = useState<boolean>(editingSkill?.isCore || false);
   const [errors, setErrors] = useState<{
     name?: string;
     category?: string;
@@ -52,10 +53,12 @@ const SkillsCRUDWidget = ({
       setName(editingSkill.name);
       setCategory(editingSkill.category);
       setLevel(editingSkill.level);
+      setIsCore(Boolean(editingSkill.isCore));
     } else if (isAdding) {
       setName("");
       setCategory("frontend");
       setLevel("middle");
+      setIsCore(false);
     }
   }, [editingSkill, isAdding]);
 
@@ -78,6 +81,7 @@ const SkillsCRUDWidget = ({
           name: name.trim(),
           category: category,
           level: level,
+          isCore: isCore,
         });
         onSkillsChange([...skills, newSkill]);
         showToast("success", "Skill created successfully");
@@ -87,6 +91,7 @@ const SkillsCRUDWidget = ({
           name: name.trim(),
           category: category,
           level: level,
+          isCore: isCore,
         });
         const updatedSkills = skills.map((s) =>
           s.id === editingId ? updatedSkill : s
@@ -109,6 +114,7 @@ const SkillsCRUDWidget = ({
     setName("");
     setCategory("frontend");
     setLevel("middle");
+    setIsCore(false);
     setErrors({});
     onEditCancel();
   };
@@ -123,10 +129,12 @@ const SkillsCRUDWidget = ({
         name={name}
         category={category}
         level={level}
+        isCore={isCore}
         errors={errors}
         onNameChange={setName}
         onCategoryChange={(value) => setCategory(value as ApiSkillCategory)}
         onLevelChange={(value) => setLevel(value as ApiSkillLevel)}
+        onIsCoreChange={setIsCore}
         disabled={isLoading}
       />
       <div className={styles.skillsCRUD__actions}>

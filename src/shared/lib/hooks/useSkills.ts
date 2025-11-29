@@ -39,7 +39,10 @@ export const useSkills = (options: UseSkillsOptions = {}) => {
 
   const coreSkills = useMemo(() => {
     if (!core) return skills;
-    return skills.slice(0, limit || 8);
+    const selected = skills.filter((skill) => skill.isCore);
+    const listToUse =
+      selected.length === 0 ? skills : selected; // fallback for legacy data
+    return limit ? listToUse.slice(0, limit) : listToUse;
   }, [skills, core, limit]);
 
   return {

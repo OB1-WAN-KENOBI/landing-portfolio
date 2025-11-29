@@ -26,4 +26,5 @@ export interface Skill {
   name: string;
   category: SkillCategory;
   level: SkillLevel;
+  isCore?: boolean;
 }

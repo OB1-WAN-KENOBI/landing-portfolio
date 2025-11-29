@@ -7,6 +7,7 @@ interface AdminSkillFormUiProps {
   name: string;
   category: ApiSkillCategory;
   level: ApiSkillLevel;
+  isCore: boolean;
   errors?: {
     name?: string;
     category?: string;
@@ -15,6 +16,7 @@ interface AdminSkillFormUiProps {
   onNameChange: (value: string) => void;
   onCategoryChange: (value: string) => void;
   onLevelChange: (value: string) => void;
+  onIsCoreChange: (value: boolean) => void;
   disabled?: boolean;
 }
 
@@ -22,10 +24,12 @@ const AdminSkillFormUi = ({
   name,
   category,
   level,
+  isCore,
   errors = {},
   onNameChange,
   onCategoryChange,
   onLevelChange,
+  onIsCoreChange,
   disabled = false,
 }: AdminSkillFormUiProps) => {
   const categoryOptions: ApiSkillCategory[] = [
@@ -65,6 +69,18 @@ const AdminSkillFormUi = ({
           disabled={disabled}
         />
       </div>
+      <label className={styles.skillForm__checkbox}>
+        <input
+          type="checkbox"
+          checked={isCore}
+          onChange={(event) => onIsCoreChange(event.target.checked)}
+          disabled={disabled}
+        />
+        <div className={styles.skillForm__checkboxText}>
+          <span>Show on homepage</span>
+          <small>Попадает в блок &quot;Основные навыки&quot; на главной</small>
+        </div>
+      </label>
     </div>
   );
 };
