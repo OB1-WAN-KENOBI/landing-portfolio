@@ -34,7 +34,7 @@ const ProjectCardUi = memo(
               src={firstImage}
               alt={title}
               className={styles.projectCard__imageImg}
-              onError={(e) => {
+              onError={() => {
                 console.error(`Failed to load image for project ${id}:`, {
                   src: firstImage?.substring(0, 100),
                   srcLength: firstImage?.length,
