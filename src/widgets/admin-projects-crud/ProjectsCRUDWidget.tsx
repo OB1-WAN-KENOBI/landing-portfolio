@@ -34,6 +34,8 @@ const ProjectsCRUDWidget = ({
   const [techStack, setTechStack] = useState("");
   const [year, setYear] = useState("");
   const [status, setStatus] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [errors, setErrors] = useState<{
     title?: string;
     description?: string;
@@ -55,12 +57,16 @@ const ProjectsCRUDWidget = ({
       setTechStack(project.techStack.join(", "));
       setYear(project.year.toString());
       setStatus(project.status);
+      setImages(project.images || []);
+      setImagePreviews([]);
     } else if (mode === "add") {
       setTitle("");
       setDescription("");
       setTechStack("");
       setYear("");
       setStatus("");
+      setImages([]);
+      setImagePreviews([]);
     }
     setErrors({});
   }, [project, mode]);
@@ -96,24 +102,35 @@ const ProjectsCRUDWidget = ({
       .filter((tech) => tech.length > 0);
 
     try {
+      const imagesData = imagePreviews.length > 0 ? imagePreviews : undefined;
+
       if (mode === "add") {
-        const newProject = await projectsApi.create({
+        const payload: any = {
           title: title.trim(),
           description: description.trim(),
           techStack: techStackArray,
           year: Number(year),
           status: status,
-        });
+        };
+        if (imagesData) {
+          payload.imagesData = imagesData;
+        }
+        const newProject = await projectsApi.create(payload);
         onProjectsChange([...projects, newProject]);
         showToast("success", "Project created successfully");
       } else if (mode === "edit" && projectId) {
-        const updatedProject = await projectsApi.update(projectId, {
+        const payload: any = {
           title: title.trim(),
           description: description.trim(),
           techStack: techStackArray,
           year: Number(year),
           status: status,
-        });
+          images: images,
+        };
+        if (imagesData) {
+          payload.imagesData = imagesData;
+        }
+        const updatedProject = await projectsApi.update(projectId, payload);
         const updatedProjects = projects.map((p) =>
           p.id === projectId ? updatedProject : p
         );
@@ -150,12 +167,53 @@ const ProjectsCRUDWidget = ({
     }
   };
 
+  const handleImagesFileSelect = (files: File[]) => {
+    if (files.length === 0) return;
+
+    const invalidFiles = files.filter(
+      (file) => !file.type.startsWith("image/") || file.size > 5 * 1024 * 1024
+    );
+
+    if (invalidFiles.length > 0) {
+      showToast("error", "Можно загружать только изображения до 5MB");
+      return;
+    }
+
+    const newPreviews: string[] = [];
+    let loadedCount = 0;
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        loadedCount++;
+        const result = reader.result as string;
+        newPreviews.push(result);
+        if (loadedCount === files.length) {
+          setImagePreviews((prev) => [...prev, ...newPreviews]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageRemove = (index: number) => {
+    const totalPreviews = imagePreviews.length;
+    if (index < totalPreviews) {
+      setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      const imageIndex = index - totalPreviews;
+      setImages((prev) => prev.filter((_, i) => i !== imageIndex));
+    }
+  };
+
   const handleClose = () => {
     setTitle("");
     setDescription("");
     setTechStack("");
     setYear("");
     setStatus("");
+    setImages([]);
+    setImagePreviews([]);
     setErrors({});
     onClose();
   };
@@ -197,12 +255,16 @@ const ProjectsCRUDWidget = ({
         techStack={techStack}
         year={year}
         status={status}
+        images={images}
+        imagePreviews={imagePreviews}
         errors={errors}
         onTitleChange={setTitle}
         onDescriptionChange={setDescription}
         onTechStackChange={setTechStack}
         onYearChange={setYear}
         onStatusChange={setStatus}
+        onImagesFileSelect={handleImagesFileSelect}
+        onImageRemove={handleImageRemove}
         disabled={isLoading}
       />
     </AdminModalUi>

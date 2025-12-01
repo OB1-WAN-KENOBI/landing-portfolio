@@ -16,6 +16,7 @@ const ProjectsListWidget = ({ projects }: ProjectsListWidgetProps) => {
           title={project.title}
           description={project.description}
           techStack={project.techStack}
+          images={project.images}
         />
       ))}
     </div>

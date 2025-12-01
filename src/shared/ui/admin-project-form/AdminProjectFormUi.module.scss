@@ -9,3 +9,122 @@
   flex-direction: column;
   gap: 20px;
 }
+
+.projectForm__imagesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.projectForm__imagesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.projectForm__imagesLabel {
+  font-family: $font-headings;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--color-text-primary);
+}
+
+.projectForm__fileButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-hover);
+  }
+
+  input {
+    display: none;
+  }
+}
+
+.projectForm__fileButtonDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.projectForm__imagesNote {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary);
+}
+
+.projectForm__imagesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.projectForm__imageItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.projectForm__imagePreview {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.projectForm__imageImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.projectForm__imagePlaceholder {
+  font-family: $font-body;
+  font-size: $font-size-xs;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: 8px;
+}
+
+.projectForm__imageRemove {
+  padding: 6px 12px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: border-color 0.15s ease, background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-error);
+    background: var(--color-surface-hover);
+    color: var(--color-error);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

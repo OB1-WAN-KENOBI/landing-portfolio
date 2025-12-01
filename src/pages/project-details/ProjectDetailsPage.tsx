@@ -124,11 +124,25 @@ const ProjectDetailsPage = () => {
             <h1 className={styles.projectDetailsPage__title}>
               {project.title}
             </h1>
-            <div className={styles.projectDetailsPage__image}>
-              <div className={styles.projectDetailsPage__placeholder}>
-                {t("project.image")}
+            {project.images && project.images.length > 0 ? (
+              <div className={styles.projectDetailsPage__images}>
+                {project.images.map((image, index) => (
+                  <div key={index} className={styles.projectDetailsPage__image}>
+                    <img
+                      src={image}
+                      alt={`${project.title} - Image ${index + 1}`}
+                      className={styles.projectDetailsPage__imageImg}
+                    />
+                  </div>
+                ))}
               </div>
-            </div>
+            ) : (
+              <div className={styles.projectDetailsPage__image}>
+                <div className={styles.projectDetailsPage__placeholder}>
+                  {t("project.image")}
+                </div>
+              </div>
+            )}
             <div className={styles.projectDetailsPage__description}>
               <h2 className={styles.projectDetailsPage__sectionTitle}>
                 {t("project.description")}

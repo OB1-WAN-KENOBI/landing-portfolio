@@ -4,7 +4,20 @@ import type { ApiProject } from "./types";
 
 export const projectsApi = {
   getAll: async (): Promise<ApiProject[]> => {
-    return apiClient.get<ApiProject[]>(endpoints.projects);
+    const projects = await apiClient.get<ApiProject[]>(endpoints.projects);
+    // Отладка в development
+    if (import.meta.env.DEV) {
+      projects.forEach((p) => {
+        if (p.images && p.images.length > 0) {
+          console.log(
+            `Project ${p.id}: ${
+              p.images.length
+            } images, first image type: ${p.images[0]?.substring(0, 20)}`
+          );
+        }
+      });
+    }
+    return projects;
   },
 
   getById: async (id: string): Promise<ApiProject | undefined> => {

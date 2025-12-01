@@ -58,12 +58,71 @@ function getLocalizedArray(
   return fallback;
 }
 
+const resolveImageUrl = (url: unknown): string | undefined => {
+  if (typeof url !== "string") return undefined;
+  const trimmed = url.trim();
+  if (!trimmed) return undefined;
+  // Data URL (base64 изображения из БД) - используем как есть
+  if (trimmed.startsWith("data:image/")) return trimmed;
+  // Абсолютные ссылки без изменений
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  // Относительные ссылки для бэка (например /uploads/...)
+  if (trimmed.startsWith("/uploads")) {
+    try {
+      const base = new URL(API_BASE_URL);
+      return `${base.origin}${trimmed}`;
+    } catch {
+      return trimmed;
+    }
+  }
+  // Файлы, лежащие на фронте (public), можно отдавать как есть
+  if (trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  // Если относительный путь без /, добавляем базовый URL
+  try {
+    const base = new URL(API_BASE_URL);
+    return `${base.origin}/${trimmed}`;
+  } catch {
+    return trimmed;
+  }
+};
+
 export const normalizeProject = (
   apiProject: ApiProject,
   lang: Language = "ru"
 ): Project => {
   const title = getLocalizedValue(apiProject.title, lang);
   const description = getLocalizedValue(apiProject.description, lang);
+
+  const images = apiProject.images
+    ? apiProject.images
+        .map((img) => {
+          const resolved = resolveImageUrl(img);
+          // Отладка (включаем и для production для диагностики)
+          if (!resolved && img) {
+            console.warn("Failed to resolve image URL:", {
+              original: img?.substring(0, 100),
+              type: typeof img,
+              length: img?.length,
+            });
+          }
+          if (resolved && resolved.startsWith("data:image/")) {
+            console.log("Resolved data URL image, length:", resolved.length);
+          }
+          return resolved;
+        })
+        .filter((url): url is string => Boolean(url))
+    : undefined;
+
+  // Отладка: проверяем, что images есть после нормализации
+  if (apiProject.images && apiProject.images.length > 0) {
+    console.log("Project images:", {
+      originalCount: apiProject.images.length,
+      resolvedCount: images?.length || 0,
+      firstImageType: apiProject.images[0]?.substring(0, 30),
+    });
+  }
 
   return {
     id: apiProject.id,
@@ -72,7 +131,7 @@ export const normalizeProject = (
     techStack: Array.isArray(apiProject.techStack) ? apiProject.techStack : [],
     year: apiProject.year,
     status: apiProject.status,
-    images: apiProject.images,
+    images,
   };
 };
 
@@ -95,25 +154,7 @@ export const normalizeProfile = (
   const aboutTexts = getLocalizedArray(apiProfile.aboutTexts, lang);
   const role = getLocalizedValue(apiProfile.role, lang);
   const description = getLocalizedValue(apiProfile.description, lang);
-  const resolvePhotoUrl = (url: unknown): string | undefined => {
-    if (typeof url !== "string") return undefined;
-    const trimmed = url.trim();
-    if (!trimmed) return undefined;
-    // Абсолютные ссылки без изменений
-    if (/^https?:\/\//i.test(trimmed)) return trimmed;
-    // Файлы, лежащие на фронте (public), можно отдавать как есть
-    if (trimmed.startsWith("/") && !trimmed.startsWith("/uploads")) {
-      return trimmed;
-    }
-    // Относительные ссылки для бэка (например /uploads/...)
-    try {
-      const base = new URL(API_BASE_URL);
-      return `${base.origin}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
-    } catch {
-      return trimmed;
-    }
-  };
-  const photoUrl = resolvePhotoUrl(apiProfile.photoUrl);
+  const photoUrl = resolveImageUrl(apiProfile.photoUrl);
 
   return {
     name: apiProfile.name || "",
